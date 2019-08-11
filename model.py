@@ -60,10 +60,10 @@ class Racun:
 #* Razred LYRICS, za tip naloge, ko igralec ugiba izbrisane besede iz besedila pesmi.
 
 # Funkcija, ki iz datoteke s pesmimi izbere zeljeno in izbrise nekaj besed, spremeni vse v potrebne oblike.
-def lyrics(level, pesem):
+def lyrics(level, datoteka_s_pesmimi, pesem):
     locila = ".,!?"
     stevilo = 2 * level
-    with open(DATOTEKA_S_PESMIMI, "r", encoding="utf-8") as dat:
+    with open(datoteka_s_pesmimi, "r", encoding="utf-8") as dat:
         for i, vrstica in enumerate(dat):
             if i == 2 * pesem + 1:
                 vrstica = vrstica.split()
@@ -95,8 +95,8 @@ class Lyrics:
     def __init__(self, level):
         self.level = level
 
-    def sestavi_tekst(self, pesem):
-        self.koncen, self.iskane, *self.podatki = lyrics(self.level, pesem)
+    def sestavi_tekst(self, datoteka_s_pesmimi, pesem):
+        self.koncen, self.iskane, *self.podatki = lyrics(self.level, datoteka_s_pesmimi, pesem)
 
     def preveri_lyrics(self, vnosi):
         return [self.iskane[i] == vnosi[i].upper() for i in range(len(self.iskane))]
@@ -130,10 +130,10 @@ class Igralec:
 
 
 
-    def zapoj(self):
+    def zapoj(self, datoteka_s_pesmimi):
         pesem = Lyrics(self.level)
         zap_st = random.choice(self.preostale_pesmi)
-        pesem.sestavi_tekst(self.preostale_pesmi.pop(zap_st))
+        pesem.sestavi_tekst(datoteka_s_pesmimi, self.preostale_pesmi.pop(zap_st))
         return pesem.podatki, pesem.koncen, pesem.iskane
 
 

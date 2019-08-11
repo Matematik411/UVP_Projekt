@@ -1,4 +1,4 @@
-% rebase ('base.tpl', title = 'igra')
+% rebase ('base.tpl', title = 'Igra')
 % import model
 
 <h1>

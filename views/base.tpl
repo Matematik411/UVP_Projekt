@@ -13,7 +13,7 @@
 
     <style>
     </style>
-    <title>Vislice</title>
+    <title>Igra</title>
   </head>
   <body>
     <div class="container">

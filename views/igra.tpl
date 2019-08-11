@@ -17,9 +17,9 @@
   <p>Na voljo imate naslednje tipe nalog.</p>
 
   <form action="/racun/" method="post">
-    <button type="submit">Racun</button>
+    <button type="submit">Račun</button>
   </form>
-  <form action="/igra/" method="get">
+  <form action="/pesem/" method="post">
     <button type="submit">Pesem</button>
   </form>
 

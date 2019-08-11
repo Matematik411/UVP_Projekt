@@ -1,4 +1,5 @@
 import bottle
+import ast
 import model
 
 DATOTEKA_S_STANJEM = "stanje.json"
@@ -33,9 +34,9 @@ def racun():
     
     if not nadzor.odgovor:
     
-        stevila = nadzor.igralci[igralec].racunaj()
-        a, znak, b, resitev = stevila
-        bottle.response.set_cookie("stevila", stevila, secret=SKRIVNOST, path="/")
+        vrednosti = nadzor.igralci[igralec].racunaj()
+        a, znak, b, resitev = vrednosti
+        bottle.response.set_cookie("vrednosti", str(vrednosti), secret=SKRIVNOST, path="/")
         nadzor.odgovor = True
         return bottle.template("racun.tpl",
         znak=znak,
@@ -44,7 +45,8 @@ def racun():
         odgovor=False)
 
     else:
-        a, znak, b, resitev = bottle.request.get_cookie("stevila", secret=SKRIVNOST)
+        a, znak, b, resitev = ast.literal_eval(
+            bottle.request.get_cookie("vrednosti", secret=SKRIVNOST))
         vnos = int(bottle.request.forms.getunicode("vnos"))
         if vnos == resitev:
             nadzor.igralci[igralec].napredek(1)
@@ -56,6 +58,50 @@ def racun():
             a=a,
             b=b,
             odgovor=True)
+
+
+
+@bottle.post("/pesem/")
+def pesem():
+    igralec = bottle.request.get_cookie("igralec", secret=SKRIVNOST)
+    
+    if not nadzor.odgovor:
+    
+        vrednosti = nadzor.igralci[igralec].zapoj(nadzor.datoteka_s_pesmimi)
+        (avtor, naslov), niz, besede = vrednosti
+        bottle.response.set_cookie("vrednosti", str(vrednosti), secret=SKRIVNOST, path="/")
+        nadzor.odgovor = True
+        return bottle.template("pesem.tpl",
+        avtor=avtor,
+        naslov=naslov,
+        niz=niz,
+        odgovor=False)
+
+    else:
+        (avtor, naslov), niz, besede = ast.literal_eval(
+            bottle.request.get_cookie("vrednosti", secret=SKRIVNOST))
+
+        vnos = bottle.request.forms.getunicode("vnos")
+        vnos = vnos.split(",")
+        uspeh = []
+        for i, prava in enumerate(besede):
+            if prava == vnos[i].upper():
+                uspeh.append("Prav")
+            else:
+                uspeh.append("Narobe")
+        if uspeh == ["Prav"] * nadzor.igralci[igralec].level * 2:
+            nadzor.igralci[igralec].napredek(3)
+            nadzor.odgovor = False
+            bottle.redirect("/igra/")
+        else:
+            return bottle.template("pesem.tpl",
+            avtor=avtor,
+            naslov=naslov,
+            niz=niz,
+            odgovor=True,
+            vnos=vnos,
+            uspeh=uspeh)
+            
 
 
 
