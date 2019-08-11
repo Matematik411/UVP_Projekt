@@ -1,4 +1,7 @@
 import random
+import json
+DATOTEKA_S_STANJEM = "stanje.json"
+DATOTEKA_S_PESMIMI = "besedila.txt"
 #* Pozdrav!
 # V tej datoteki definiram vse tipe nalog, ki so na voljo v igri.
 
@@ -57,13 +60,12 @@ print(test.resitev())
 
 #------------------------------------------------------------
 #* Razred LYRICS, za tip naloge, ko igralec ugiba izbrisane besede iz besedila pesmi.
-LYRICS = "Besedila.txt"
 
 # Funkcija, ki iz datoteke s pesmimi izbere zeljeno in izbrise nekaj besed, spremeni vse v potrebne oblike.
 def lyrics(level, pesem):
     locila = ".,!?"
     stevilo = 2 * level
-    with open(LYRICS, "r", encoding="utf-8") as dat:
+    with open(DATOTEKA_S_PESMIMI, "r", encoding="utf-8") as dat:
         for i, vrstica in enumerate(dat):
             if i == 2 * pesem + 1:
                 vrstica = vrstica.split()
@@ -86,14 +88,17 @@ def lyrics(level, pesem):
                     else:
                         koncen += beseda + " "
                 koncen = koncen[:-1]
-                return koncen, iskane
+            if i == 2 * pesem:
+                avtor, naslov = vrstica.split(",")
+                naslov = naslov.strip()
+        return koncen, iskane, avtor, naslov
 
 class Lyrics:
     def __init__(self, level):
         self.level = level
 
     def sestavi_tekst(self, pesem):
-        self.koncen, self.iskane = lyrics(self.level, pesem)
+        self.koncen, self.iskane, *self.podatki = lyrics(self.level, pesem)
 
     def preveri_lyrics(self, vnosi):
         return [self.iskane[i] == vnosi[i].upper() for i in range(len(self.iskane))]
@@ -107,4 +112,73 @@ pesem = Lyrics(4)
 pesem.sestavi_tekst(2)
 print(pesem.koncen)
 print(pesem.iskane)
+print(pesem.podatki)
 #print(pesem.preveri_lyrics(["poljuBljena", "poljuBljena", "poljuBljena", "poljuBljena", "poljuBljena", "poljuBljena"]))
+
+
+
+
+
+#------------------------------------------------------------
+#* Razred IGRALEC, ki nadzira posameznega igralca.
+
+
+class Igralec:
+    def __init__(self, ime):
+        self.level = 1
+        self.exp = 0
+        self.ime = ime
+        self.preostale_pesmi = [i for i in range(5)] #st pesmi
+
+    def racunaj(self):
+        racun = Racun(self.level)
+        racun.sestavi_racun(random.randrange(5))
+        return racun.a, racun.znak, racun.b, racun.resitev()
+
+
+
+    def zapoj(self):
+        pesem = Lyrics(self.level)
+        zap_st = random.choice(self.preostale_pesmi)
+        pesem.sestavi_tekst(self.preostale_pesmi.pop(zap_st))
+        return pesem.podatki, pesem.koncen, pesem.iskane
+
+
+    def napredek(self, tocke):
+        self.exp += tocke
+        while self.exp > 5 * self.level:
+            self.exp -= 5 * self.level
+            self.level += 1
+
+#------------------------------------------------------------
+
+miha = Igralec("Miha")
+print(miha.racunaj())
+print(miha.zapoj())
+
+#------------------------------------------------------------
+#* Razred NADZOR, ki nadzira, shranjuje...
+
+class Nadzor:
+    def __init__(self, datoteka_s_stanjem, datoteka_s_pesmimi):
+        self.igralci = {}
+        self.datoteka_s_stanjem = datoteka_s_stanjem
+        self.datoteka_s_pesmimi = datoteka_s_pesmimi
+        self.odgovor = False
+
+    def nov_igralec(self, ime):
+        igralec = Igralec(ime.capitalize())
+        self.igralci[ime.upper()] = igralec
+        return ime.upper()
+
+     
+nadzor = Nadzor(DATOTEKA_S_STANJEM, DATOTEKA_S_PESMIMI)
+x = nadzor.nov_igralec("nejc")
+pl = nadzor.igralci[x]
+print(x)
+print(nadzor.igralci[x].ime)
+print(nadzor.igralci)
+print(pl.level)
+pl.napredek(18)
+print(pl.level)
+print(pl.exp)
