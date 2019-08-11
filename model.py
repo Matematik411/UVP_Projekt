@@ -1,7 +1,5 @@
 import random
 import json
-DATOTEKA_S_STANJEM = "stanje.json"
-DATOTEKA_S_PESMIMI = "besedila.txt"
 #* Pozdrav!
 # V tej datoteki definiram vse tipe nalog, ki so na voljo v igri.
 
@@ -47,14 +45,14 @@ class Racun:
     def preveri_racun(self, vrednost):
         return self.resitev() == vrednost
 #------------------------------------------------------------
-test = Racun(5)
-test.sestavi_racun(4)
-print(test.a)
-print(test.b)
-print(test.znak)
-print(test.resitev())
 
 
+# test = Racun(5)
+# test.sestavi_racun(4)
+# print(test.a)
+# print(test.b)
+# print(test.znak)
+# print(test.resitev())
 
 
 
@@ -104,18 +102,13 @@ class Lyrics:
         return [self.iskane[i] == vnosi[i].upper() for i in range(len(self.iskane))]
 #------------------------------------------------------------
     
-   
 
-    
-
-pesem = Lyrics(4)
-pesem.sestavi_tekst(2)
-print(pesem.koncen)
-print(pesem.iskane)
-print(pesem.podatki)
+# pesem = Lyrics(4)
+# pesem.sestavi_tekst(2)
+# print(pesem.koncen)
+# print(pesem.iskane)
+# print(pesem.podatki)
 #print(pesem.preveri_lyrics(["poljuBljena", "poljuBljena", "poljuBljena", "poljuBljena", "poljuBljena", "poljuBljena"]))
-
-
 
 
 
@@ -125,7 +118,7 @@ print(pesem.podatki)
 
 class Igralec:
     def __init__(self, ime):
-        self.level = 1
+        self.level = 2
         self.exp = 0
         self.ime = ime
         self.preostale_pesmi = [i for i in range(5)] #st pesmi
@@ -146,15 +139,15 @@ class Igralec:
 
     def napredek(self, tocke):
         self.exp += tocke
-        while self.exp > 5 * self.level:
+        while self.exp >= 5 * self.level:
             self.exp -= 5 * self.level
             self.level += 1
 
 #------------------------------------------------------------
 
-miha = Igralec("Miha")
-print(miha.racunaj())
-print(miha.zapoj())
+# miha = Igralec("Miha")
+# print(miha.racunaj())
+# print(miha.zapoj())
 
 #------------------------------------------------------------
 #* Razred NADZOR, ki nadzira, shranjuje...
@@ -172,13 +165,13 @@ class Nadzor:
         return ime.upper()
 
      
-nadzor = Nadzor(DATOTEKA_S_STANJEM, DATOTEKA_S_PESMIMI)
-x = nadzor.nov_igralec("nejc")
-pl = nadzor.igralci[x]
-print(x)
-print(nadzor.igralci[x].ime)
-print(nadzor.igralci)
-print(pl.level)
-pl.napredek(18)
-print(pl.level)
-print(pl.exp)
+# nadzor = Nadzor(DATOTEKA_S_STANJEM, DATOTEKA_S_PESMIMI)
+# x = nadzor.nov_igralec("nejc")
+# pl = nadzor.igralci[x]
+# print(x)
+# print(nadzor.igralci[x].ime)
+# print(nadzor.igralci)
+# print(pl.level)
+# pl.napredek(18)
+# print(pl.level)
+# print(pl.exp)

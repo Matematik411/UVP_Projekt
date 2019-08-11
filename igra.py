@@ -27,17 +27,35 @@ def igra():
     ime=nadzor.igralci[igralec].ime,
     igralec=nadzor.igralci[igralec])
 
-@bottle.get("/racun/")
+@bottle.post("/racun/")
 def racun():
     igralec = bottle.request.get_cookie("igralec", secret=SKRIVNOST)
-    a, znak, b, resitev = nadzor.igralci[igralec].racunaj()
-    bottle.response.set_cookie("resitev", resitev, secret=SKRIVNOST, path="/")
-    return bottle.template("racun.tpl",
-    znak=znak,
-    a=a,
-    b=b)
+    
+    if not nadzor.odgovor:
+    
+        stevila = nadzor.igralci[igralec].racunaj()
+        a, znak, b, resitev = stevila
+        bottle.response.set_cookie("stevila", stevila, secret=SKRIVNOST, path="/")
+        nadzor.odgovor = True
+        return bottle.template("racun.tpl",
+        znak=znak,
+        a=a,
+        b=b,
+        odgovor=False)
 
-
+    else:
+        a, znak, b, resitev = bottle.request.get_cookie("stevila", secret=SKRIVNOST)
+        vnos = int(bottle.request.forms.getunicode("vnos"))
+        if vnos == resitev:
+            nadzor.igralci[igralec].napredek(1)
+            nadzor.odgovor = False
+            bottle.redirect("/igra/")
+        else:
+            return bottle.template("racun.tpl",
+            znak=znak,
+            a=a,
+            b=b,
+            odgovor=True)
 
 
 
