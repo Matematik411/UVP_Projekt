@@ -25,6 +25,12 @@
 
 
 
+  <p>Shrani profil in vrni na začetno stran.</p>
+  <form action="/shrani/" method="post">        
+    <button type="submit">Shrani profil</button>
+  </form>
+
+
 
 
 

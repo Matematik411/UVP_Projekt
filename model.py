@@ -133,7 +133,8 @@ class Igralec:
     def zapoj(self, datoteka_s_pesmimi):
         pesem = Lyrics(self.level)
         zap_st = random.choice(self.preostale_pesmi)
-        pesem.sestavi_tekst(datoteka_s_pesmimi, self.preostale_pesmi.pop(zap_st))
+        pesem.sestavi_tekst(datoteka_s_pesmimi, zap_st)
+        self.preostale_pesmi.remove(zap_st)
         return pesem.podatki, pesem.koncen, pesem.iskane
 
 
@@ -164,6 +165,25 @@ class Nadzor:
         self.igralci[ime.upper()] = igralec
         return ime.upper()
 
+
+    def shrani(self):
+        with open(self.datoteka_s_stanjem, "w", encoding="utf-8") as dat:
+            podatki = {ime: {"level" : igralec.level, "exp" : igralec.exp,
+            "pesmi" : igralec.preostale_pesmi}
+            for ime, igralec in self.igralci.items()}
+            json.dump(podatki, dat)
+
+
+    def nalozi(self):
+        with open(self.datoteka_s_stanjem, "r", encoding="utf-8") as dat:
+            podatki = json.load(dat)
+            for ime, slovar in podatki.items():
+                igralec = Igralec(ime)
+                igralec.level = slovar["level"]
+                igralec.exp = slovar["exp"]
+                igralec.preostale_pesmi = slovar["pesmi"]
+                self.igralci[ime] = igralec
+    
      
 # nadzor = Nadzor(DATOTEKA_S_STANJEM, DATOTEKA_S_PESMIMI)
 # x = nadzor.nov_igralec("nejc")

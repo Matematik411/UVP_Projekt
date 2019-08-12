@@ -10,7 +10,10 @@ nadzor = model.Nadzor(DATOTEKA_S_STANJEM, DATOTEKA_S_PESMIMI)
 
 @bottle.get("/")
 def index():
-    return bottle.template("index.tpl")
+    nadzor.nalozi()
+    return bottle.template("index.tpl",
+    nadzor=nadzor
+    )
 
 
 @bottle.post("/nov_igralec/")
@@ -19,6 +22,16 @@ def nov_igralec():
     igralec = nadzor.nov_igralec(vnos)
     bottle.response.set_cookie("igralec", igralec, secret=SKRIVNOST, path = "/")
     bottle.redirect("/igra/")
+
+
+@bottle.post("/izbira/")
+def izbira():
+    igralec = bottle.request.forms.getunicode("ime")
+    bottle.response.set_cookie("igralec", igralec, secret=SKRIVNOST, path = "/")
+    bottle.redirect("/igra/")
+        
+    
+
 
 
 @bottle.get("/igra/")
@@ -104,8 +117,10 @@ def pesem():
             
 
 
-
-
+@bottle.post("/shrani/")
+def shrani():
+    nadzor.shrani()
+    bottle.redirect("/")
 
 
 
