@@ -194,6 +194,7 @@ class Nadzor:
         for igralec in self.igralci.values():
             igralec.preostale_pesmi.append(self.stevilo_pesmi)
         self.stevilo_pesmi += 1
+        self.shrani()
         avtor, naslov = podatki
         with open(self.datoteka_s_pesmimi, "a", encoding="utf-8") as dat:
             print("{0}, {1}".format(avtor, naslov), file=dat)
@@ -203,7 +204,11 @@ class Nadzor:
      
 # nadzor = Nadzor(DATOTEKA_S_STANJEM, DATOTEKA_S_PESMIMI)
 # x = nadzor.nov_igralec("nejc")
+# print(nadzor.igralci[x].preostale_pesmi)
+# for igralec in nadzor.igralci.values():
+#     igralec.preostale_pesmi.append(nadzor.stevilo_pesmi)
 # pl = nadzor.igralci[x]
+# print(nadzor.igralci[x].preostale_pesmi)
 # print(x)
 # print(nadzor.igralci[x].ime)
 # print(nadzor.igralci)

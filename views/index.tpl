@@ -20,15 +20,9 @@
       <form action="/izbira/" method="post">        
         <button type="submit" name="ime" value={{igralec.ime}}>{{igralec.ime}}</button>
       </form> 
-      {{igralec.preostale_pesmi}}  
 
   % end
 
-
-
-  <form action="/shrani/" method="post">        
-    <button type="submit">Shrani profile</button>
-  </form>
 
 
 
