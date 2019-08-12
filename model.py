@@ -1,5 +1,7 @@
 import random
 import json
+DATOTEKA_S_STANJEM = "stanje.json"
+DATOTEKA_S_PESMIMI = "besedila.txt"
 #* Pozdrav!
 # V tej datoteki definiram vse tipe nalog, ki so na voljo v igri.
 
@@ -117,11 +119,11 @@ class Lyrics:
 
 
 class Igralec:
-    def __init__(self, ime):
+    def __init__(self, ime, stevilo):
         self.level = 2
         self.exp = 0
         self.ime = ime
-        self.preostale_pesmi = [i for i in range(5)] #st pesmi
+        self.preostale_pesmi = [i for i in range(stevilo)] #st pesmi
 
     def racunaj(self):
         racun = Racun(self.level)
@@ -159,9 +161,13 @@ class Nadzor:
         self.datoteka_s_stanjem = datoteka_s_stanjem
         self.datoteka_s_pesmimi = datoteka_s_pesmimi
         self.odgovor = False
+        with open(datoteka_s_pesmimi) as dat:
+            for i, _ in enumerate(dat):
+                pass
+        self.stevilo_pesmi = (i + 1) // 2
 
     def nov_igralec(self, ime):
-        igralec = Igralec(ime.capitalize())
+        igralec = Igralec(ime.capitalize(), self.stevilo_pesmi)
         self.igralci[ime.upper()] = igralec
         return ime.upper()
 
@@ -178,11 +184,21 @@ class Nadzor:
         with open(self.datoteka_s_stanjem, "r", encoding="utf-8") as dat:
             podatki = json.load(dat)
             for ime, slovar in podatki.items():
-                igralec = Igralec(ime)
+                igralec = Igralec(ime, self.stevilo_pesmi)
                 igralec.level = slovar["level"]
                 igralec.exp = slovar["exp"]
                 igralec.preostale_pesmi = slovar["pesmi"]
                 self.igralci[ime] = igralec
+
+    def dodaj_pesem(self, podatki, niz):
+        for igralec in self.igralci.values():
+            igralec.preostale_pesmi.append(self.stevilo_pesmi)
+        self.stevilo_pesmi += 1
+        avtor, naslov = podatki
+        with open(self.datoteka_s_pesmimi, "a", encoding="utf-8") as dat:
+            print("{0}, {1}".format(avtor, naslov), file=dat)
+            print(" ".join(niz.split()), file=dat)
+
     
      
 # nadzor = Nadzor(DATOTEKA_S_STANJEM, DATOTEKA_S_PESMIMI)
@@ -195,3 +211,15 @@ class Nadzor:
 # pl.napredek(18)
 # print(pl.level)
 # print(pl.exp)
+# print(nadzor.stevilo_pesmi)
+# niz= """Ampak sem edini, k’ s tvoje rane liže kri,
+# jaz sem edini, k’ tvoj jok umiri.
+# In samo edini, k’ ne obstaja,
+# ne obstaja brez tvojega sveta."""
+# podatki = ("Siddharta","Samo edini")
+# avtor, naslov = podatki
+# nadzor.stevilo_pesmi += 1
+# with open(DATOTEKA_S_PESMIMI, "a", encoding="utf-8") as dat:
+#     print("{0}, {1}".format(avtor, naslov), file=dat)
+#     print(" ".join(niz.split()), file=dat)
+# nadzor.dodaj_pesem(("Siddharta","Samo edini"),niz)

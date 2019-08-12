@@ -98,7 +98,7 @@ def pesem():
         vnos = vnos.split(",")
         uspeh = []
         for i, prava in enumerate(besede):
-            if prava == vnos[i].upper():
+            if prava == vnos[i].strip().upper():
                 uspeh.append("Prav")
             else:
                 uspeh.append("Narobe")
@@ -122,6 +122,17 @@ def shrani():
     nadzor.shrani()
     bottle.redirect("/")
 
+@bottle.get("/dodaj/")
+def dodaj():
+    return bottle.template("dodaj.tpl")
+
+@bottle.post("/dodaj_pesem/")
+def dodaj_pesem():
+    avtor = bottle.request.forms.getunicode("avtor")
+    naslov = bottle.request.forms.getunicode("naslov")
+    besedilo = bottle.request.forms.getunicode("besedilo")
+    nadzor.dodaj_pesem((avtor, naslov), besedilo)
+    bottle.redirect("/")
 
 
 

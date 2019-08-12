@@ -10,6 +10,13 @@
 
   Stopnja: {{igralec.level}} <br>
   % skupno = igralec.level * 5
+  % delez = int((igralec.exp / skupno) * 100)
+  % str = str(delez) + "%"
+  <!-- <div class="progress">
+    <div class="progress-bar" role="progressbar" style="width: str" 
+    aria-valuemin="0" aria-valuemax="100">
+    {{igralec.exp}} / {{delez}}</div>
+  </div> -->
   Izkušnje: {{igralec.exp}} / {{skupno}}
   
   %#<img src="/img/poro.png/" alt="slikica">
