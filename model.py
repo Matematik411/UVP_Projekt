@@ -88,10 +88,24 @@ def lyrics(level, datoteka_s_pesmimi, pesem):
                     else:
                         koncen += beseda + " "
                 koncen = koncen[:-1]
+                prava = vrstica[::]
             if i == 2 * pesem:
                 avtor, naslov = vrstica.split(",")
                 naslov = naslov.strip()
-        return koncen, iskane, avtor, naslov
+        deli = []
+        niz = ""
+        for beseda in prava:
+            if "-" != beseda[0]:
+                niz += beseda + " "
+            else:
+                if beseda[-1] not in locila:
+                    deli.append(niz)
+                    niz = " "
+                else:
+                    deli.append(niz)
+                    niz = beseda[-1] + " "
+        deli.append(niz[:-1])
+        return deli, iskane, avtor, naslov
 
 class Lyrics:
     def __init__(self, level):

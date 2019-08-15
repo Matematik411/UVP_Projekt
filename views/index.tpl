@@ -20,6 +20,7 @@
       <form action="/izbira/" method="post">        
         <button type="submit" name="ime" value={{igralec.ime}}>{{igralec.ime}}</button>
       </form> 
+      % end
 
   % end
 

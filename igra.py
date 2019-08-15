@@ -1,6 +1,7 @@
 import bottle
 import ast
 import model
+import random
 
 DATOTEKA_S_STANJEM = "stanje.json"
 DATOTEKA_S_PESMIMI = "besedila.txt"
@@ -97,48 +98,56 @@ def racun():
 @bottle.post("/pesem/")
 def pesem():
     igralec = bottle.request.get_cookie("igralec", secret=SKRIVNOST)
-    try:
-        if not nadzor.odgovor:
-            vrednosti = nadzor.igralci[igralec].zapoj(nadzor.datoteka_s_pesmimi)
-            (avtor, naslov), niz, besede = vrednosti
-            bottle.response.set_cookie("vrednosti", str(vrednosti), secret=SKRIVNOST, path="/")
-            nadzor.odgovor = True
+    #try:
+    if not nadzor.odgovor:
+        vrednosti = nadzor.igralci[igralec].zapoj(nadzor.datoteka_s_pesmimi)
+        (avtor, naslov), niz, besede = vrednosti
+        premesano = [i for i in range(len(besede))]
+        random.shuffle(premesano)
+        vrednosti = ((avtor, naslov), niz, besede, premesano)
+        bottle.response.set_cookie("vrednosti", str(vrednosti), secret=SKRIVNOST, path="/")
+        nadzor.odgovor = True
+
+        return bottle.template("pesem.tpl",
+        avtor=avtor,
+        naslov=naslov,
+        niz=niz,
+        premesano=(premesano, besede),
+        odgovor=False)
+
+    else:
+        (avtor, naslov), niz, besede, premesano = ast.literal_eval(
+            bottle.request.get_cookie("vrednosti", secret=SKRIVNOST))
+        vnos = [bottle.request.forms.getunicode(str(i)) for i in range(len(besede))]
+        # vnos = bottle.request.forms.getunicode("vnos")
+        # vnos = vnos.split(",")
+        # uspeh = []
+        # for i, prava in enumerate(besede):
+        #     if prava == vnos[i].strip().upper():
+        #         uspeh.append("Prav")
+        #     else:
+        #         uspeh.append("Narobe")
+        uspeh = []
+        # if uspeh == ["Prav"] * nadzor.igralci[igralec].level * 2:
+        if vnos == [i for i in range(len(besede))]:
+            nadzor.igralci[igralec].napredek(3)
+            nadzor.odgovor = False
+            bottle.redirect("/igra/")
+        else:
             return bottle.template("pesem.tpl",
             avtor=avtor,
             naslov=naslov,
             niz=niz,
-            odgovor=False)
-
-        else:
-            (avtor, naslov), niz, besede = ast.literal_eval(
-                bottle.request.get_cookie("vrednosti", secret=SKRIVNOST))
-
-            vnos = bottle.request.forms.getunicode("vnos")
-            vnos = vnos.split(",")
-            uspeh = []
-            for i, prava in enumerate(besede):
-                if prava == vnos[i].strip().upper():
-                    uspeh.append("Prav")
-                else:
-                    uspeh.append("Narobe")
-            if uspeh == ["Prav"] * nadzor.igralci[igralec].level * 2:
-                nadzor.igralci[igralec].napredek(3)
-                nadzor.odgovor = False
-                bottle.redirect("/igra/")
-            else:
-                return bottle.template("pesem.tpl",
-                avtor=avtor,
-                naslov=naslov,
-                niz=niz,
-                odgovor=True,
-                vnos=vnos,
-                uspeh=uspeh)
-    except (TypeError, ValueError, AttributeError):
-        nadzor.odgovor = False
-        return bottle.template("igra.tpl",
-        ime=nadzor.igralci[igralec].ime,
-        igralec=nadzor.igralci[igralec],
-        error=True)
+            premesano=(premesano, besede),
+            odgovor=True,
+            vnos=vnos,
+            uspeh=uspeh)
+    # except (TypeError, ValueError, AttributeError):
+    #     nadzor.odgovor = False
+    #     return bottle.template("igra.tpl",
+    #     ime=nadzor.igralci[igralec].ime,
+    #     igralec=nadzor.igralci[igralec],
+    #     error=True)
 
 
 
