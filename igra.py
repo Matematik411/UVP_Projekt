@@ -37,6 +37,7 @@ def izbira():
 @bottle.get("/igra/")
 def igra():
     igralec = bottle.request.get_cookie("igralec", secret=SKRIVNOST)
+    nadzor.odgovor = False
     return bottle.template("igra.tpl",
     ime=nadzor.igralci[igralec].ime,
     igralec=nadzor.igralci[igralec])
@@ -60,17 +61,31 @@ def racun():
     else:
         a, znak, b, resitev = ast.literal_eval(
             bottle.request.get_cookie("vrednosti", secret=SKRIVNOST))
-        vnos = int(bottle.request.forms.getunicode("vnos"))
-        if vnos == resitev:
-            nadzor.igralci[igralec].napredek(1)
-            nadzor.odgovor = False
-            bottle.redirect("/igra/")
-        else:
+        vnos = bottle.request.forms.getunicode("vnos")
+        try:
+            vnos = int(vnos)
+            if vnos == resitev:
+                nadzor.igralci[igralec].napredek(1)
+                nadzor.odgovor = False
+                bottle.redirect("/igra/")
+            else:
+                return bottle.template("racun.tpl",
+                znak=znak,
+                a=a,
+                b=b,
+                odgovor=True,
+                error=False)
+        except ValueError:
             return bottle.template("racun.tpl",
             znak=znak,
             a=a,
             b=b,
-            odgovor=True)
+            odgovor=True,
+            error=True)
+
+
+
+
 
 
 
@@ -124,15 +139,24 @@ def shrani():
 
 @bottle.get("/dodaj/")
 def dodaj():
-    return bottle.template("dodaj.tpl")
+    return bottle.template("dodaj.tpl",
+    error=False)
 
 @bottle.post("/dodaj_pesem/")
 def dodaj_pesem():
-    avtor = bottle.request.forms.getunicode("avtor")
-    naslov = bottle.request.forms.getunicode("naslov")
-    besedilo = bottle.request.forms.getunicode("besedilo")
-    nadzor.dodaj_pesem((avtor, naslov), besedilo)
-    bottle.redirect("/")
+    try:
+        avtor = bottle.request.forms.getunicode("avtor")
+        naslov = bottle.request.forms.getunicode("naslov")
+        besedilo = bottle.request.forms.getunicode("besedilo")
+        dolzina = len(besedilo.split())
+        if "," in avtor or "," in naslov or "" in [avtor, naslov, besedilo] or 20 > dolzina or 50 < dolzina:
+            raise ValueError
+        nadzor.dodaj_pesem((avtor, naslov), besedilo)
+        bottle.redirect("/")
+    except ValueError:
+        return bottle.template("dodaj.tpl",
+        error=True)
+
 
 
 

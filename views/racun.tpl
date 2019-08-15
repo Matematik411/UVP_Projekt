@@ -11,6 +11,18 @@
         Odgovorili ste narobe! <br>
         Poskusite ponovno.
     </p>
+
+
+
+
+    % if error: 
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            Rešitev računa je <strong>celo število</strong>! Ne vpisujte črk ali ostalih neštevilskih znakov.
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    % end
 % end
 
 
