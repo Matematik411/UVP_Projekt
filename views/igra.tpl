@@ -37,7 +37,13 @@
     <button type="submit">Shrani profil</button>
   </form>
 
-
+% if error:
+  <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      Zaradi nepotrebnega osveževanja ali uporabljanja gumba za nazaj je <strong>prišlo do napake!</strong><br> Ponovno izberite željeno nalogo.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
 
 
 
