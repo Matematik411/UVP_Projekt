@@ -2,34 +2,44 @@
 % import model
 
 <h1>
-    Iskanje manjkajočega dela besedila
+    Dopolni besedilo pesmi
 </h1>
 
 % if odgovor:
-    <h2>Imate nekaj napak</h2>
-    <p>
-        Odgovorili ste z naslednjimi besedami: {{vnos}} <br>
-        Vaša uspešnost: {{uspeh}}
-    </p>
+    <div class="alert alert-danger" role="alert">
+        <strong>Imate nekaj napak!</strong>
+        <br>
+        <p>Reševali ste z naslednjo uspešnostjo:
+            <hr>
+        % for beseda in uspeh:
+            {{beseda}}  
+        % end
+            <hr>
+        Poskusite ponovno.
+        </p>
+    </div>
 % end
 
-<p>Poišči manjkajoče besede in jih v zaporedju vpiši.</p>
+<p>Izberi manjkajočo besedo in s tem dopolni besedilo pesmi</p>
+<hr>
 
-<h2>Izvajalec: {{avtor}}. Pesem:{{naslov}}</h2>
+<h3>Izvajalec: <strong>{{avtor}}</strong><br>
+    Pesem: <em>{{naslov}}</em>
+</h3>
 <form action="/pesem/" method="post">
-    % for i, odsek in enumerate(niz):
+    % for i, odsek in enumerate(odseki):
         {{odsek}}
-        % if i != len(niz) - 1:
-            <div class="input-group mb-3 d-inline-flex" style="width: 150px" >
-                <select class="custom-select">
+        % if i != len(odseki) - 1:
+            <div class="input-group d-inline-flex" style="width: 150px" >
+                <select class="custom-select" name="{{i}}">
                     <option selected >možne besede</option>
                     % for j in premesano[0]:
-                        <option name="{{i}}" value="{{j}}">{{premesano[1][j]}}</option>
+                        <option value="{{j}}">{{premesano[1][j]}}</option>
                     % end
                 </select>
             </div>
         % end
     % end
-    <button type="submit" class="btn btn-primary">Vnesi rešitev</button>
+    <button type="submit" class="btn btn-primary align-self-end">Vnesi rešitev</button>
 </form>
 

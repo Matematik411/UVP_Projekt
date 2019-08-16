@@ -2,7 +2,7 @@
 % import model
 
 <h1>
-    Računska naloga
+    Besedilna naloga
 </h1>
 
 % if odgovor:
@@ -23,10 +23,13 @@
     % end
 % end
 
+<h3>Navodila naloge</h3>
+<p>{{navodilo}}</p>
 
-% operacija = ["+", "-", "*", "//", "%"][znak]
-<form action="/racun/" method="post">
-    {{"{0} {1} {2} = ".format(a, operacija, b)}} <input type="text" name="vnos">
-      <button type="submit" class="btn btn-primary">Vnesi vrednost</button>
+<form action="/besedilna/" method="post">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" name="vnos">
+    </div>
+    <button type="submit" class="btn btn-primary">Vnesi vrednost</button>
 </form>
 

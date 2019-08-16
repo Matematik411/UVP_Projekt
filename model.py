@@ -29,7 +29,10 @@ class Racun:
             a, b = a - b, a + b
             self.znak = znak
         self.a = a
-        self.b = b
+        if self.znak == 2:
+            self.b = b // 2
+        else:
+            self.b = b
 
     # Vrne vrednost, ki je iskana resitev
     def resitev(self):
@@ -44,18 +47,7 @@ class Racun:
         elif self.znak == 4:
             return self.a % self.b
     
-    def preveri_racun(self, vrednost):
-        return self.resitev() == vrednost
 #------------------------------------------------------------
-
-
-# test = Racun(5)
-# test.sestavi_racun(4)
-# print(test.a)
-# print(test.b)
-# print(test.znak)
-# print(test.resitev())
-
 
 
 #------------------------------------------------------------
@@ -66,66 +58,88 @@ def lyrics(level, datoteka_s_pesmimi, pesem):
     locila = ".,!?"
     stevilo = 2 * level
     with open(datoteka_s_pesmimi, "r", encoding="utf-8") as dat:
+        ze_izbrane = []
         for i, vrstica in enumerate(dat):
             if i == 2 * pesem + 1:
                 vrstica = vrstica.split()
                 while stevilo > 0:
                     zamenjan = random.randint(1, len(vrstica) - 2)
                     beseda = vrstica[zamenjan]
-                    if len(beseda) > 1 and "’" not in beseda and "-" != beseda[0]:
-                        vrstica[zamenjan] = "-" + beseda
-                        stevilo -= 1
-                koncen = ""
-                iskane = []
-                for beseda in vrstica:
-                    if beseda[0] == "-":
-                        if beseda[-1] in locila:
-                            koncen += "_____" + beseda[-1] + " "
-                            iskane.append(beseda[1:-1].upper())
-                        else:
-                            koncen += "_____" + " "
-                            iskane.append(beseda[1:].upper())
-                    else:
-                        koncen += beseda + " "
-                koncen = koncen[:-1]
-                prava = vrstica[::]
+                    if len(beseda) > 1 and "-" != beseda[0]:
+                        kopija = beseda[::]
+                        kopija.rstrip(locila)
+                        kopija = kopija.upper()
+                        if kopija not in ze_izbrane:
+                            vrstica[zamenjan] = "-" + beseda
+                            stevilo -= 1
+                            ze_izbrane.append(kopija)
+                prava_vrstica = vrstica[::]
             if i == 2 * pesem:
                 avtor, naslov = vrstica.split(",")
                 naslov = naslov.strip()
-        deli = []
+        odseki = []
+        iskane = []
         niz = ""
-        for beseda in prava:
+        for beseda in prava_vrstica:
             if "-" != beseda[0]:
                 niz += beseda + " "
             else:
                 if beseda[-1] not in locila:
-                    deli.append(niz)
+                    odseki.append(niz)
+                    iskane.append(beseda[1:].upper())
                     niz = " "
                 else:
-                    deli.append(niz)
+                    odseki.append(niz)
+                    iskane.append(beseda[1:-1].upper())
                     niz = beseda[-1] + " "
-        deli.append(niz[:-1])
-        return deli, iskane, avtor, naslov
+        odseki.append(niz[:-1])
+        return odseki, iskane, avtor, naslov
 
 class Lyrics:
     def __init__(self, level):
         self.level = level
 
     def sestavi_tekst(self, datoteka_s_pesmimi, pesem):
-        self.koncen, self.iskane, *self.podatki = lyrics(self.level, datoteka_s_pesmimi, pesem)
+        self.odseki, self.iskane, *self.podatki = lyrics(self.level, datoteka_s_pesmimi, pesem)
 
-    def preveri_lyrics(self, vnosi):
-        return [self.iskane[i] == vnosi[i].upper() for i in range(len(self.iskane))]
 #------------------------------------------------------------
     
 
-# pesem = Lyrics(4)
-# pesem.sestavi_tekst(2)
-# print(pesem.koncen)
-# print(pesem.iskane)
-# print(pesem.podatki)
-#print(pesem.preveri_lyrics(["poljuBljena", "poljuBljena", "poljuBljena", "poljuBljena", "poljuBljena", "poljuBljena"]))
+#------------------------------------------------------------
+#* Razred BESEDILNA, za tip naloge, kjer rešujemo klasično besedilno nalogo s številsko rešitvijo.
+# Naloge tu niso razporejene po težavnosti/levelih.
+class Besedilna:
+    def __init__(self):
+        pass
 
+    def sestavi_besedilno(self, datoteka_z_nalogami, naloga):
+        with open(datoteka_z_nalogami, "r", encoding="utf-8") as dat:
+            navodila = ""
+            prvi_del = False
+            drugi_del = False
+            for vrstica in dat:
+                if vrstica == "(((REŠITEV))){0}\n".format(naloga):
+                    prvi_del = False
+
+                if prvi_del:
+                    navodila += vrstica
+                if drugi_del:
+                    resitev = int(vrstica)
+                    drugi_del = False
+
+                if vrstica == "(((ZAČETEK))){0}\n".format(naloga):
+                    prvi_del = True
+                elif vrstica == "(((REŠITEV))){0}\n".format(naloga):
+                    drugi_del = True
+            self.navodila = navodila[:-1]
+            self.resitev = resitev
+                
+# test = Besedilna()
+# test.sestavi_besedilno("naloge.txt", 1)
+# print(test.navodila)
+# print(test.resitev)
+
+#------------------------------------------------------------
 
 
 #------------------------------------------------------------
@@ -133,11 +147,14 @@ class Lyrics:
 
 
 class Igralec:
-    def __init__(self, ime, stevilo):
+    def __init__(self, ime, zival, stevilo_pesmi, stevilo_nalog):
         self.level = 2
         self.exp = 0
         self.ime = ime
-        self.preostale_pesmi = [i for i in range(stevilo)] #st pesmi
+        self.zival = zival
+        self.preostale_pesmi = [i for i in range(stevilo_pesmi)]
+        self.preostale_naloge = [i for i in range(stevilo_nalog)]
+
 
     def racunaj(self):
         racun = Racun(self.level)
@@ -145,13 +162,20 @@ class Igralec:
         return racun.a, racun.znak, racun.b, racun.resitev()
 
 
-
     def zapoj(self, datoteka_s_pesmimi):
         pesem = Lyrics(self.level)
         zap_st = random.choice(self.preostale_pesmi)
         pesem.sestavi_tekst(datoteka_s_pesmimi, zap_st)
         self.preostale_pesmi.remove(zap_st)
-        return pesem.podatki, pesem.koncen, pesem.iskane
+        return pesem.podatki, pesem.odseki, pesem.iskane
+
+
+    def resuj(self, datoteka_z_nalogami):
+        naloga = Besedilna()
+        zap_st = random.choice(self.preostale_naloge)
+        naloga.sestavi_besedilno(datoteka_z_nalogami, zap_st)
+        self.preostale_naloge.remove(zap_st)
+        return naloga.navodila, naloga.resitev
 
 
     def napredek(self, tocke):
@@ -161,27 +185,32 @@ class Igralec:
             self.level += 1
 
 #------------------------------------------------------------
-
-# miha = Igralec("Miha")
-# print(miha.racunaj())
-# print(miha.zapoj())
+# miha = Igralec("miha", "zmaj", 10, 2)
+# print(miha.resuj("naloge.txt"))
 
 #------------------------------------------------------------
 #* Razred NADZOR, ki nadzira, shranjuje...
 
 class Nadzor:
-    def __init__(self, datoteka_s_stanjem, datoteka_s_pesmimi):
+    def __init__(self, datoteka_s_stanjem, datoteka_s_pesmimi, datoteka_z_nalogami):
         self.igralci = {}
         self.datoteka_s_stanjem = datoteka_s_stanjem
         self.datoteka_s_pesmimi = datoteka_s_pesmimi
+        self.datoteka_z_nalogami = datoteka_z_nalogami
         self.odgovor = False
-        with open(datoteka_s_pesmimi) as dat:
+        with open(datoteka_s_pesmimi, "r", encoding="utf-8") as dat:
             for i, _ in enumerate(dat):
                 pass
         self.stevilo_pesmi = (i + 1) // 2
+        with open(datoteka_z_nalogami, "r", encoding="utf-8") as dat:
+            for vrstica in dat:
+                if vrstica[:13] == "(((REŠITEV)))":
+                    skupaj = int(vrstica[13:])
+        self.stevilo_nalog = skupaj + 1
+            
 
-    def nov_igralec(self, ime):
-        igralec = Igralec(ime.capitalize(), self.stevilo_pesmi)
+    def nov_igralec(self, ime, zival):
+        igralec = Igralec(ime.capitalize(), zival, self.stevilo_pesmi, self.stevilo_nalog)
         self.igralci[ime.upper()] = igralec
         return ime.upper()
 
@@ -189,7 +218,8 @@ class Nadzor:
     def shrani(self):
         with open(self.datoteka_s_stanjem, "w", encoding="utf-8") as dat:
             podatki = {ime: {"level" : igralec.level, "exp" : igralec.exp,
-            "pesmi" : igralec.preostale_pesmi}
+            "pesmi" : igralec.preostale_pesmi, "naloge" : igralec.preostale_naloge,
+            "zival" : igralec.zival}
             for ime, igralec in self.igralci.items()}
             json.dump(podatki, dat)
 
@@ -198,10 +228,11 @@ class Nadzor:
         with open(self.datoteka_s_stanjem, "r", encoding="utf-8") as dat:
             podatki = json.load(dat)
             for ime, slovar in podatki.items():
-                igralec = Igralec(ime, self.stevilo_pesmi)
+                igralec = Igralec(ime, slovar["zival"], self.stevilo_pesmi, self.stevilo_nalog)
                 igralec.level = slovar["level"]
                 igralec.exp = slovar["exp"]
                 igralec.preostale_pesmi = slovar["pesmi"]
+                igralec.preostale_naloge = slovar["naloge"]
                 self.igralci[ime] = igralec
 
     def dodaj_pesem(self, podatki, niz):
@@ -214,31 +245,23 @@ class Nadzor:
             print("{0}, {1}".format(avtor, naslov), file=dat)
             print(" ".join(niz.split()), file=dat)
 
-    
-     
-# nadzor = Nadzor(DATOTEKA_S_STANJEM, DATOTEKA_S_PESMIMI)
-# x = nadzor.nov_igralec("nejc")
-# print(nadzor.igralci[x].preostale_pesmi)
-# for igralec in nadzor.igralci.values():
-#     igralec.preostale_pesmi.append(nadzor.stevilo_pesmi)
-# pl = nadzor.igralci[x]
-# print(nadzor.igralci[x].preostale_pesmi)
-# print(x)
-# print(nadzor.igralci[x].ime)
-# print(nadzor.igralci)
-# print(pl.level)
-# pl.napredek(18)
-# print(pl.level)
-# print(pl.exp)
-# print(nadzor.stevilo_pesmi)
-# niz= """Ampak sem edini, k’ s tvoje rane liže kri,
-# jaz sem edini, k’ tvoj jok umiri.
-# In samo edini, k’ ne obstaja,
-# ne obstaja brez tvojega sveta."""
-# podatki = ("Siddharta","Samo edini")
-# avtor, naslov = podatki
-# nadzor.stevilo_pesmi += 1
-# with open(DATOTEKA_S_PESMIMI, "a", encoding="utf-8") as dat:
-#     print("{0}, {1}".format(avtor, naslov), file=dat)
-#     print(" ".join(niz.split()), file=dat)
-# nadzor.dodaj_pesem(("Siddharta","Samo edini"),niz)
+
+    def dodaj_nalogo(self, navodilo, resitev):
+        for igralec in self.igralci.values():
+            igralec.preostale_naloge.append(self.stevilo_nalog)
+        with open(self.datoteka_z_nalogami, "a", encoding="utf-8") as dat:
+            print("(((ZAČETEK))){0}".format(self.stevilo_nalog), file=dat)
+            print(navodilo, file=dat)
+            print("(((REŠITEV))){0}".format(self.stevilo_nalog), file=dat)
+            print(resitev, file=dat)
+        self.stevilo_nalog += 1
+        self.shrani()
+ 
+
+# nadzor = Nadzor("stanje.json", "besedila.txt", "naloge.txt")
+# nadzor.nov_igralec("Kekec", "duh")
+# print(nadzor.stevilo_nalog)
+# print(nadzor.igralci["KEKEC"].resuj("naloge.txt"))
+# navodilo = """Živali na farmi imajo skupaj 34 nog. To so kokoši in krave. Krav je 7.
+# Koliko je kokoši?"""
+# nadzor.dodaj_nalogo(navodilo, 3)

@@ -95,3 +95,10 @@ def lyrics(level, datoteka_s_pesmimi, pesem):
 haha = ([3,1,2,0], ["prva", "druga", "tretja", "cetrta"])
 for st in haha[0]:
     print(haha[1][st])
+
+line = "01234567"
+print(line[5:])
+
+resitev = "asd"
+resitev = resitev.upper()
+print(resitev)

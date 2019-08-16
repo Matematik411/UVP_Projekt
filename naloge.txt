@@ -1,0 +1,16 @@
+(((ZAČETEK)))0
+Miha ima 3 žoge. Izgubil je 2.
+Koliko jih še ima?
+(((REŠITEV)))0
+1
+(((ZAČETEK)))1
+V vrečki imamo 36 kroglic različnih barv (rumene, rdeče, modre, zelene).
+Iz vrečke na slepo vzamemo kroglico. Verjetnost, da je rdeča, je 5/9.
+Koliko rdečih kroglic je v posodi?
+(((REŠITEV)))1
+20
+(((ZAČETEK)))2
+Živali na farmi imajo skupaj 34 nog. To so kokoši in krave. Krav je 7.
+Koliko je kokoši?
+(((REŠITEV)))2
+3
