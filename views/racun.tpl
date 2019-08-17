@@ -6,11 +6,11 @@
 </h1>
 
 % if odgovor:
-    <h2>NAPAKA!</h2>
-    <p>
-        Odgovorili ste narobe! <br>
-        Poskusite ponovno.
-    </p>
+    <div class="alert alert-danger" role="alert">
+        <strong>Napačen odgovor!</strong>
+        <hr>
+        <p>Odgovorili ste narobe. Poskusite ponovno.</p>
+    </div>
 
 
     % if error: 
@@ -33,4 +33,11 @@
         <input type="text" name="vnos" class="form-control">
     </div>
     <button type="submit" class="btn btn-primary">Vnesi vrednost</button>
+</form>
+
+<hr>
+<p>Če je naloga je pretežka, lahko obupate in s tem porabite to nalogo ter izgubite eno točko izkušenj.</p>
+
+<form action="/poraz/" method="post">
+    <button type="submit" class="btn btn-danger">Ne znam rešiti naloge.</button>
 </form>

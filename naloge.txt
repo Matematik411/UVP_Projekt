@@ -34,3 +34,9 @@ Peter in Petra vsako jutro tečeta na stadionu. Peter potrebuje za en krog 4 min
 24
 (((TEŽAVNOST)))4
 3
+(((ZAČETEK)))5
+V trgovini prodajajo priljubljeno otroško sestavljanko iz lesa. Otroci lahko poljubno izberejo glavo, obleko in čevlje medvedka. V škatli so štiri glave, štiri obleke in štirje pari čevljev. Koliko različnih medvedkov lahko sestavimo?
+(((REŠITEV)))5
+64
+(((TEŽAVNOST)))5
+2

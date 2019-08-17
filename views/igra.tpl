@@ -2,10 +2,10 @@
 % rebase ('base.tpl', title = 'Igra')
 
 
-  <h1>Profil: <strong>{{igralec.ime}}</strong></h1> 
+  <h1>Profil: <strong>{{igralec.ime.capitalize()}}</strong></h1> 
 
   <p>Stopnja: <strong>{{igralec.level}}</strong> <br>
-  % skupno = igralec.level * 5
+  % skupno = igralec.level * 4
     Izkušnje: {{igralec.exp}} / {{skupno}}
   </p>
 

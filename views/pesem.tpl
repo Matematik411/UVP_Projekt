@@ -43,3 +43,9 @@
     <button type="submit" class="btn btn-primary align-self-end">Vnesi rešitev</button>
 </form>
 
+<hr>
+<p>Če je naloga je pretežka, lahko obupate in s tem porabite to nalogo ter izgubite eno točko izkušenj.</p>
+
+<form action="/poraz/" method="post">
+    <button type="submit" class="btn btn-danger">Ne znam rešiti naloge.</button>
+</form>

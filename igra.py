@@ -49,10 +49,13 @@ def izbira():
 @bottle.get("/igra/")
 def igra():
     igralec = bottle.request.get_cookie("igralec", secret=SKRIVNOST)
-    return bottle.template("igra.tpl",
-    ime=nadzor.igralci[igralec].ime,
-    igralec=nadzor.igralci[igralec],
-    error=False)
+    if nadzor.igralci[igralec].level == 6:
+        return bottle.template("zmaga.tpl",
+        igralec=nadzor.igralci[igralec])
+    else:
+        return bottle.template("igra.tpl",
+        igralec=nadzor.igralci[igralec],
+        error=False)
 
 # Reševanje računske naloge
 @bottle.post("/racun/")
@@ -97,7 +100,6 @@ def racun():
     except (TypeError, ValueError, AttributeError):
         nadzor.odgovor = False
         return bottle.template("igra.tpl",
-        ime=nadzor.igralci[igralec].ime,
         igralec=nadzor.igralci[igralec],
         error=True)
 
@@ -154,7 +156,6 @@ def pesem():
     except (TypeError, ValueError, AttributeError):
         nadzor.odgovor = False
         return bottle.template("igra.tpl",
-        ime=nadzor.igralci[igralec].ime,
         igralec=nadzor.igralci[igralec],
         error=True)
 
@@ -197,7 +198,6 @@ def besedilna():
     except (TypeError, ValueError, AttributeError):
         nadzor.odgovor = False
         return bottle.template("igra.tpl",
-        ime=nadzor.igralci[igralec].ime,
         igralec=nadzor.igralci[igralec],
         error=True)
 
@@ -209,6 +209,18 @@ def besedilna():
 def shrani():
     nadzor.shrani()
     bottle.redirect("/")
+
+
+# Če je naloga pretežka
+@bottle.post("/poraz/")
+def poraz():
+    igralec = bottle.request.get_cookie("igralec", secret=SKRIVNOST)
+    nadzor.igralci[igralec].napredek(-1)
+    nadzor.odgovor = False
+    return bottle.template("igra.tpl",
+    igralec=nadzor.igralci[igralec],
+    error=False)
+
 
 
 # Naslednji trije za dodajanje nalog

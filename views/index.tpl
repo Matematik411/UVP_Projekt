@@ -1,26 +1,34 @@
 % rebase ('base.tpl', title = 'Igra')
 
-  <h1>Igra</h1>
+  <h1>Igra evolucije</h1>
 
-  <blockquote>
+
+
+  <div class="alert alert-info" role="alert">
     Pozdravljeni v igri evolucije, kjer skozi reševanje nalog razvijate svojega prijatelja. 
-    <small>Velenje, avgust 2019</small>
-  </blockquote>
+  </div>
 
   Za novega igralca vnesite ime in izberite prijatelja.
   <form action="/nov_igralec/" method="post">
-    Ime: <input type="text" name="ime">
-    
-    <div class="input-group d-inline-flex" style="width: 150px" >
-        <select class="custom-select" name="zival">
-            <option selected >izberi prijatelja</option>
-                <option value="zaba">žaba</option>
-                <option value="zmaj">zmaj</option>
-                <option value="kamenko">kamenko</option>
-                <option value="duh">duh</option>
-        </select>
+    <div class="container">
+      <div class="row">
+        <div class="input-group" style="width: 300px">
+          <div class="input-group-prepend">
+              <span class="input-group-text">Ime</span>
+          </div>
+          <input type="text" name="ime" class="form-control">
+        </div>
+        <div class="input-group d-inline-flex" style="width: 150px" >
+            <select class="custom-select" name="zival">
+                <option selected >Izberi prijatelja</option>
+                    <option value="zaba">žaba</option>
+                    <option value="zmaj">zmaj</option>
+                    <option value="kamenko">kamenko</option>
+                    <option value="duh">duh</option>
+            </select>
+        </div>
+      </div>
     </div>
-
     <button type="submit" class="btn btn-primary">Nov igralec</button>
   </form>
 
@@ -32,14 +40,17 @@
         </button>
     </div>
   % end
-
+  <hr>
   % if nadzor.igralci != {}:
       Če želite nadaljevati igro od prej, izberite svoje ime.
   
-      %  for igralec in nadzor.igralci.values():
-      <form action="/izbira/" method="post">        
-        <button type="submit" name="ime" value={{igralec.ime}} class="btn btn-outline-primary">{{igralec.ime}}</button>
-      </form> 
+      % for igralec in nadzor.igralci.values():
+          <form action="/izbira/" method="post">        
+          % if igralec.level == 6:
+            <button type="submit" name="ime" value={{igralec.ime}} class="btn   btn-outline-success">{{igralec.ime.capitalize()}}</button>
+          % else:
+            <button type="submit" name="ime" value={{igralec.ime}} class="btn btn-outline-primary">{{igralec.ime.capitalize()}}</button>
+          </form> 
       % end
 
   % end
@@ -52,4 +63,4 @@
     <button type="submit" class="btn btn-primary">Dodajanje nalog</button>
   </form>
 
-
+  <small>Velenje, avgust 2019</small>

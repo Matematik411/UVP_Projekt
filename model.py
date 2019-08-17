@@ -211,14 +211,14 @@ class Nadzor:
             
     # Se kliče za ustvarjanje novega igralca.
     def nov_igralec(self, ime, zival):
-        igralec = Igralec(ime.capitalize(), zival, self.stevilo_pesmi, self.stevilo_nalog)
+        igralec = Igralec(ime.upper(), zival, self.stevilo_pesmi, self.stevilo_nalog)
         self.igralci[ime.upper()] = igralec
         return ime.upper()
 
     # Shrani podatke o vseh igralcih v datoteko "stanje.json".
     def shrani(self):
         with open(self.datoteka_s_stanjem, "w", encoding="utf-8") as dat:
-            podatki = {ime: {"level" : igralec.level, "exp" : igralec.exp,
+            podatki = {ime.upper(): {"level" : igralec.level, "exp" : igralec.exp,
             "pesmi" : igralec.preostale_pesmi, "naloge" : igralec.preostale_naloge,
             "zival" : igralec.zival}
             for ime, igralec in self.igralci.items()}
@@ -229,7 +229,7 @@ class Nadzor:
         with open(self.datoteka_s_stanjem, "r", encoding="utf-8") as dat:
             podatki = json.load(dat)
             for ime, slovar in podatki.items():
-                igralec = Igralec(ime, slovar["zival"], self.stevilo_pesmi, self.stevilo_nalog)
+                igralec = Igralec(ime.upper(), slovar["zival"], self.stevilo_pesmi, self.stevilo_nalog)
                 igralec.level = slovar["level"]
                 igralec.exp = slovar["exp"]
                 igralec.preostale_pesmi = slovar["pesmi"]
