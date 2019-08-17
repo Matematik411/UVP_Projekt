@@ -26,7 +26,11 @@
 
 % operacija = ["+", "-", "*", "//", "%"][znak]
 <form action="/racun/" method="post">
-    {{"{0} {1} {2} = ".format(a, operacija, b)}} <input type="text" name="vnos">
-      <button type="submit" class="btn btn-primary">Vnesi vrednost</button>
+    <div class="input-group">
+        <div class="input-group-prepend">
+            <span class="input-group-text">{{"{0} {1} {2} = ".format(a, operacija, b)}}</span>
+        </div>
+        <input type="text" name="vnos" class="form-control">
+    </div>
+    <button type="submit" class="btn btn-primary">Vnesi vrednost</button>
 </form>
-

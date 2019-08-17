@@ -99,6 +99,7 @@ class Lyrics:
     def __init__(self, level):
         self.level = level
 
+    # Glavna metoda, ki sestavni besedilo, manjkajoče besede. Željene podatke shrani v atribute atribute objekta razreda Lyrics.
     def sestavi_tekst(self, datoteka_s_pesmimi, pesem):
         self.odseki, self.iskane, *self.podatki = lyrics(self.level, datoteka_s_pesmimi, pesem)
 
@@ -107,61 +108,62 @@ class Lyrics:
 
 #------------------------------------------------------------
 #* Razred BESEDILNA, za tip naloge, kjer rešujemo klasično besedilno nalogo s številsko rešitvijo.
-# Naloge tu niso razporejene po težavnosti/levelih.
+# Naloge se tu ne izbirajo glede na level igralca, saj imajo vnaprej določeno težavnost.
 class Besedilna:
     def __init__(self):
         pass
-
+    
+    # Glavna metoda, ki shrani željene vrednosti v atribute objekta.
     def sestavi_besedilno(self, datoteka_z_nalogami, naloga):
         with open(datoteka_z_nalogami, "r", encoding="utf-8") as dat:
-            navodila = ""
+            navodilo = ""
             prvi_del = False
             drugi_del = False
+            tretji_del = False
             for vrstica in dat:
                 if vrstica == "(((REŠITEV))){0}\n".format(naloga):
                     prvi_del = False
 
                 if prvi_del:
-                    navodila += vrstica
+                    navodilo += vrstica
                 if drugi_del:
                     resitev = int(vrstica)
                     drugi_del = False
+                if tretji_del:
+                    tezavnost = int(vrstica)
+                    tretji_del = False
 
                 if vrstica == "(((ZAČETEK))){0}\n".format(naloga):
                     prvi_del = True
                 elif vrstica == "(((REŠITEV))){0}\n".format(naloga):
                     drugi_del = True
-            self.navodila = navodila[:-1]
+                elif vrstica == "(((TEŽAVNOST))){0}\n".format(naloga):
+                    tretji_del = True
+            self.navodilo = navodilo[:-1]
             self.resitev = resitev
+            self.tezavnost = tezavnost
                 
-# test = Besedilna()
-# test.sestavi_besedilno("naloge.txt", 1)
-# print(test.navodila)
-# print(test.resitev)
-
 #------------------------------------------------------------
 
 
 #------------------------------------------------------------
 #* Razred IGRALEC, ki nadzira posameznega igralca.
-
-
 class Igralec:
     def __init__(self, ime, zival, stevilo_pesmi, stevilo_nalog):
-        self.level = 2
+        self.level = 1
         self.exp = 0
         self.ime = ime
         self.zival = zival
         self.preostale_pesmi = [i for i in range(stevilo_pesmi)]
         self.preostale_naloge = [i for i in range(stevilo_nalog)]
 
-
+    # To metodo se kliče za nalogo računa. Vrne podatke, za sestavo računa.
     def racunaj(self):
         racun = Racun(self.level)
         racun.sestavi_racun(random.randrange(5))
         return racun.a, racun.znak, racun.b, racun.resitev()
 
-
+    # To metodo se kliče za nalogo iskanja manjkajočih besed. Vrne iskane podatke.
     def zapoj(self, datoteka_s_pesmimi):
         pesem = Lyrics(self.level)
         zap_st = random.choice(self.preostale_pesmi)
@@ -169,28 +171,27 @@ class Igralec:
         self.preostale_pesmi.remove(zap_st)
         return pesem.podatki, pesem.odseki, pesem.iskane
 
-
+    # Ta metoda pa se kliče pri besedilni nalogi, prav tako vrne podatke.
     def resuj(self, datoteka_z_nalogami):
         naloga = Besedilna()
         zap_st = random.choice(self.preostale_naloge)
         naloga.sestavi_besedilno(datoteka_z_nalogami, zap_st)
         self.preostale_naloge.remove(zap_st)
-        return naloga.navodila, naloga.resitev
+        return naloga.navodilo, naloga.resitev, naloga.tezavnost
 
-
+    # V primeru pravilno rešene naloge, se uporabi naslednja metoda.
     def napredek(self, tocke):
         self.exp += tocke
-        while self.exp >= 5 * self.level:
-            self.exp -= 5 * self.level
+        while self.exp >= 4 * self.level:
+            self.exp -= 4 * self.level
             self.level += 1
 
 #------------------------------------------------------------
-# miha = Igralec("miha", "zmaj", 10, 2)
-# print(miha.resuj("naloge.txt"))
+
 
 #------------------------------------------------------------
-#* Razred NADZOR, ki nadzira, shranjuje...
-
+#* Razred NADZOR, ki nadzira, shranjuje in upravlja delovanje igre.
+# Objek Nadzora ima v atributih shranjene vse potrebne podatke, za igranje in ustvarjanje novih igralcev.
 class Nadzor:
     def __init__(self, datoteka_s_stanjem, datoteka_s_pesmimi, datoteka_z_nalogami):
         self.igralci = {}
@@ -204,17 +205,17 @@ class Nadzor:
         self.stevilo_pesmi = (i + 1) // 2
         with open(datoteka_z_nalogami, "r", encoding="utf-8") as dat:
             for vrstica in dat:
-                if vrstica[:13] == "(((REŠITEV)))":
-                    skupaj = int(vrstica[13:])
+                if vrstica[:15] == "(((TEŽAVNOST)))":
+                    skupaj = int(vrstica[15:])
         self.stevilo_nalog = skupaj + 1
             
-
+    # Se kliče za ustvarjanje novega igralca.
     def nov_igralec(self, ime, zival):
         igralec = Igralec(ime.capitalize(), zival, self.stevilo_pesmi, self.stevilo_nalog)
         self.igralci[ime.upper()] = igralec
         return ime.upper()
 
-
+    # Shrani podatke o vseh igralcih v datoteko "stanje.json".
     def shrani(self):
         with open(self.datoteka_s_stanjem, "w", encoding="utf-8") as dat:
             podatki = {ime: {"level" : igralec.level, "exp" : igralec.exp,
@@ -223,7 +224,7 @@ class Nadzor:
             for ime, igralec in self.igralci.items()}
             json.dump(podatki, dat)
 
-
+    # Naloži podatke o igralcih iz datoteke "stanje.json".
     def nalozi(self):
         with open(self.datoteka_s_stanjem, "r", encoding="utf-8") as dat:
             podatki = json.load(dat)
@@ -235,6 +236,7 @@ class Nadzor:
                 igralec.preostale_naloge = slovar["naloge"]
                 self.igralci[ime] = igralec
 
+    # Metoda za nalaganje nove pesmi. Vnesemo željeni del besedila ter podatke o pesmi. Podatka sta naslov in izvajalec, ki pa ne smeta vsebovati vejic.
     def dodaj_pesem(self, podatki, niz):
         for igralec in self.igralci.values():
             igralec.preostale_pesmi.append(self.stevilo_pesmi)
@@ -245,8 +247,8 @@ class Nadzor:
             print("{0}, {1}".format(avtor, naslov), file=dat)
             print(" ".join(niz.split()), file=dat)
 
-
-    def dodaj_nalogo(self, navodilo, resitev):
+    # Dodajanje besedilnih nalog, s številskimi rešitvami.
+    def dodaj_nalogo(self, navodilo, resitev, tezavnost):
         for igralec in self.igralci.values():
             igralec.preostale_naloge.append(self.stevilo_nalog)
         with open(self.datoteka_z_nalogami, "a", encoding="utf-8") as dat:
@@ -254,14 +256,8 @@ class Nadzor:
             print(navodilo, file=dat)
             print("(((REŠITEV))){0}".format(self.stevilo_nalog), file=dat)
             print(resitev, file=dat)
+            print("(((TEŽAVNOST))){0}".format(self.stevilo_nalog), file=dat)
+            print(tezavnost, file=dat)
         self.stevilo_nalog += 1
         self.shrani()
  
-
-# nadzor = Nadzor("stanje.json", "besedila.txt", "naloge.txt")
-# nadzor.nov_igralec("Kekec", "duh")
-# print(nadzor.stevilo_nalog)
-# print(nadzor.igralci["KEKEC"].resuj("naloge.txt"))
-# navodilo = """Živali na farmi imajo skupaj 34 nog. To so kokoši in krave. Krav je 7.
-# Koliko je kokoši?"""
-# nadzor.dodaj_nalogo(navodilo, 3)

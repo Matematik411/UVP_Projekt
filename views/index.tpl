@@ -24,6 +24,15 @@
     <button type="submit" class="btn btn-primary">Nov igralec</button>
   </form>
 
+  % if error:
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        Pozabili ste izbrati svojega <em>prijatelja</em> ali pa ste vpisali ime, pod katerim že obstaja profil. Ponovno poskusite.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+  % end
+
   % if nadzor.igralci != {}:
       Če želite nadaljevati igro od prej, izberite svoje ime.
   

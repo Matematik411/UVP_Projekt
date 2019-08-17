@@ -3,14 +3,34 @@ Miha ima 3 žoge. Izgubil je 2.
 Koliko jih še ima?
 (((REŠITEV)))0
 1
+(((TEŽAVNOST)))0
+1
 (((ZAČETEK)))1
 V vrečki imamo 36 kroglic različnih barv (rumene, rdeče, modre, zelene).
 Iz vrečke na slepo vzamemo kroglico. Verjetnost, da je rdeča, je 5/9.
 Koliko rdečih kroglic je v posodi?
 (((REŠITEV)))1
 20
+(((TEŽAVNOST)))1
+3
 (((ZAČETEK)))2
 Živali na farmi imajo skupaj 34 nog. To so kokoši in krave. Krav je 7.
 Koliko je kokoši?
 (((REŠITEV)))2
+3
+(((TEŽAVNOST)))2
+2
+(((ZAČETEK)))3
+Jan si vsak dan vsaj dvakrat umije zobe. Zjutraj nameni umivanju zob natančno 3 minute. Zvečer se umivanja loti še temeljiteje in mu nameni točno 5 minut. Kadar je sladkarije, si zmeraj umije zobe. Takrat mu umivanje vzame natanko 2 minuti časa. Ta teden je sladkarije jedel trikrat.
+
+Koliko časa je Jan ta teden namenil umivanju zob?
+(((REŠITEV)))3
+62
+(((TEŽAVNOST)))3
+2
+(((ZAČETEK)))4
+Peter in Petra vsako jutro tečeta na stadionu. Peter potrebuje za en krog 4 minute, Petra pa 6 minut. Teči začneta istočasno. Po koliko minutah se bosta spet srečala?
+(((REŠITEV)))4
+24
+(((TEŽAVNOST)))4
 3

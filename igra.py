@@ -18,17 +18,22 @@ nadzor = model.Nadzor(DATOTEKA_S_STANJEM, DATOTEKA_S_PESMIMI, DATOTEKA_Z_NALOGAM
 def index():
     nadzor.nalozi()
     return bottle.template("index.tpl",
-    nadzor=nadzor
-    )
+    nadzor=nadzor,
+    error=False)
 
 # Izbira igralca preko naslednjih dveh ukazov pelje na glavno igralno stran.
 @bottle.post("/nov_igralec/")
 def nov_igralec():
     vnos = bottle.request.forms.getunicode("ime")
     zival = bottle.request.forms.getunicode("zival")
-    igralec = nadzor.nov_igralec(vnos, zival)
-    bottle.response.set_cookie("igralec", igralec, secret=SKRIVNOST, path = "/")
-    bottle.redirect("/igra/")
+    if zival == "izberi prijatelja" or "" == vnos or vnos.upper() in nadzor.igralci:
+        return bottle.template("index.tpl",
+        nadzor=nadzor,
+        error=True)
+    else:
+        igralec = nadzor.nov_igralec(vnos, zival)
+        bottle.response.set_cookie("igralec", igralec, secret=SKRIVNOST, path = "/")
+        bottle.redirect("/igra/")
 
 
 @bottle.post("/izbira/")
@@ -162,7 +167,7 @@ def besedilna():
     try:
         if not nadzor.odgovor:
             vrednosti = nadzor.igralci[igralec].resuj(nadzor.datoteka_z_nalogami)
-            navodilo, resitev = vrednosti
+            navodilo, resitev, tezavnost = vrednosti
             nadzor.odgovor = True
             bottle.response.set_cookie("vrednosti", str(vrednosti), secret=SKRIVNOST, path="/")
 
@@ -171,12 +176,12 @@ def besedilna():
             odgovor=False)
 
         else:
-            navodilo, resitev = ast.literal_eval(bottle.request.get_cookie("vrednosti", secret=SKRIVNOST))
+            navodilo, resitev, tezavnost = ast.literal_eval(bottle.request.get_cookie("vrednosti", secret=SKRIVNOST))
             vnos = bottle.request.forms.getunicode("vnos")
             try:
                 vnos = int(vnos)
                 if vnos == int(resitev):
-                    nadzor.igralci[igralec].napredek(2)
+                    nadzor.igralci[igralec].napredek(int(tezavnost))
                     nadzor.odgovor = False
                     bottle.redirect("/igra/")
                 else:
@@ -206,7 +211,7 @@ def shrani():
     bottle.redirect("/")
 
 
-# Naslednja dva za dodajanje nalog
+# Naslednji trije za dodajanje nalog
 @bottle.get("/dodaj/")
 def dodaj():
     return bottle.template("dodaj.tpl",
@@ -228,8 +233,19 @@ def dodaj_pesem():
         error=True)
 
 
-
-
+@bottle.post("/dodaj_nalogo/")
+def dodaj_nalogo():
+    try:
+        navodilo = bottle.request.forms.getunicode("navodilo")
+        resitev = int(bottle.request.forms.getunicode("resitev"))
+        tezavnost = int(bottle.request.forms.getunicode("tezavnost"))
+        if "" in [navodilo, resitev, tezavnost] or 1 > tezavnost or 5 < tezavnost:
+            raise ValueError
+        nadzor.dodaj_nalogo(navodilo, resitev, tezavnost)
+        bottle.redirect("/")
+    except ValueError:
+        return bottle.template("dodaj.tpl",
+        error=True)
 
 
 

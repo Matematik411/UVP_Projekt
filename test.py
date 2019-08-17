@@ -31,3 +31,5 @@ print(line[5:])
 resitev = "asd"
 resitev = resitev.upper()
 print(resitev)
+
+print(6)
