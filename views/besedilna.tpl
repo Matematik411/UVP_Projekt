@@ -28,7 +28,7 @@
     % end
 % end
 
-<p>Težavnost te naloge je {{tezavnost}}.</p>
+<p>Težavnost te naloge je <strong>{{tezavnost}}</strong>.</p>
 <p>{{navodilo}}</p>
 
 <form action="/besedilna/" method="post">
