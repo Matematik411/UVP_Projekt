@@ -23,7 +23,7 @@ Koliko je kokoši?
 (((ZAČETEK)))3
 Jan si vsak dan vsaj dvakrat umije zobe. Zjutraj nameni umivanju zob natančno 3 minute. Zvečer se umivanja loti še temeljiteje in mu nameni točno 5 minut. Kadar je sladkarije, si zmeraj umije zobe.
 Takrat mu umivanje vzame natanko 2 minuti časa. Ta teden je sladkarije jedel trikrat.
-Koliko časa je Jan ta teden namenil umivanju zob?
+Koliko minut je Jan ta teden namenil umivanju zob?
 (((REŠITEV)))3
 62
 (((TEŽAVNOST)))3
