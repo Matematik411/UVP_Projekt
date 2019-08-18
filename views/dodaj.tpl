@@ -4,7 +4,10 @@
 <h1>
     Dodajanje nalog
 </h1>
-<p>Dodajate lahko po eno nalogo hkrati.</p>
+
+<div class="alert alert-info" role="alert">
+    Dodajate lahko po ena nalogo hkrati. Kjer morate vnesti dva podatka, vnesite vsakega v svoje okno.
+</div>
 
 <h3>Pesem</h3>
 <p>Vnesi del izbrane pesmi. 20 do 50 besed!</p>
@@ -28,7 +31,7 @@
 <hr>
 
 <h3>Besedilna naloga s <em>celoštevilsko rešitvijo</em></h3>
-<p>Vnesi navodilo naloge, nato še njeno rešitev in njeno zamišljeno težavnost. Težavnost se bo upoštevala pri številu izkušenj, ki jih dobi tekmovalec, za rešeno nalogo. Nalogo lahko ocenite od 1 (zelo lahka -  samo osnovno računanje), do 5 (precej težka - za rešitev moramo temeljito premisliti in izračunati več stvari).</p>
+<p>Vnesi navodilo naloge, nato še njeno rešitev in njeno zamišljeno težavnost. Težavnost se bo upoštevala pri številu izkušenj, ki jih dobi igralec, za rešeno nalogo. Nalogo lahko ocenite od 1 (zelo lahka -  samo osnovno računanje), do 5 (precej težka - za rešitev moramo temeljito premisliti in izračunati več stvari).</p>
 <form action="/dodaj_nalogo/" method="post">
     <div class="input-group">
         <div class="input-group-prepend">

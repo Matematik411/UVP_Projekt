@@ -15,6 +15,7 @@
   <div class="alert alert-light" role="alert">
     Igra je bila narejena kot projektna naloga pri predmetu Uvod v programiranje, pri prof. dr. Andreju Bauerju, študijskega leta 2018/2019.
     Za pomoč se zahvaljujem družini, podatke in informacije pa sem pridobil na predavanjih in vajah že omenjenega predmeta in na svetovnem spletu.
+    <br>Avtor: Nejc Zajc.
     <hr>
     Upam, da ste se ob reševanju nalog zabavali. <br>
     <em><strong>That's all Folks!</strong></em>

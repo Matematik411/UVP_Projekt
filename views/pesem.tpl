@@ -5,6 +5,11 @@
     Dopolni besedilo pesmi
 </h1>
 
+<div class="alert alert-info" role="alert">
+    Spodaj je zapisan del besedila pesmi. Za vsako manjkajočo besedo izberite pravilno in nato vnesite svoje rešitve.
+</div>
+
+
 % if odgovor:
     <div class="alert alert-danger" role="alert">
         <strong>Imate nekaj napak!</strong>
@@ -20,8 +25,6 @@
     </div>
 % end
 
-<p>Izberi manjkajočo besedo in s tem dopolni besedilo pesmi</p>
-<hr>
 
 <h3>Izvajalec: <strong>{{avtor}}</strong><br>
     Pesem: <em>{{naslov}}</em>

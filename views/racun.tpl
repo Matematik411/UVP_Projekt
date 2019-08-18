@@ -5,6 +5,10 @@
     Računska naloga
 </h1>
 
+  <div class="alert alert-info" role="alert">
+    Pred vami je preprost celoštevilski račun. Možne operacije so <em>seštevanje</em> (+), <em>odštevanje</em> (-), <em>množenje</em> (*), <em>celoštevilsko deljenje</em> (//) - torej največje celo število, ki je manjše od kvocienta danih števil, in <em>ostanek pri deljenju</em> (%) - torej a % b, je naravno število, ki ga moramo odšteti a, da dobimo največji, od a manjši, večkratnik števila b. 
+  </div>
+
 % if odgovor:
     <div class="alert alert-danger" role="alert">
         <strong>Napačen odgovor!</strong>

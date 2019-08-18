@@ -5,6 +5,10 @@
     Besedilna naloga
 </h1>
 
+<div class="alert alert-info" role="alert">
+    Preberite navodila, rešite nalogo in vpišite rešitev. Rešitev bo vselej celo število.
+</div>
+
 % if odgovor:
     <div class="alert alert-danger" role="alert">
         <strong>Napačen odgovor!</strong>
@@ -24,7 +28,7 @@
     % end
 % end
 
-<h3>Navodila naloge</h3>
+<p>Težavnost te naloge je {{tezavnost}}.</p>
 <p>{{navodilo}}</p>
 
 <form action="/besedilna/" method="post">

@@ -41,18 +41,18 @@
     </div>
   % end
   <hr>
+  
   % if nadzor.igralci != {}:
       Če želite nadaljevati igro od prej, izberite svoje ime.
-  
       % for igralec in nadzor.igralci.values():
           <form action="/izbira/" method="post">        
           % if igralec.level == 6:
-            <button type="submit" name="ime" value={{igralec.ime}} class="btn   btn-outline-success">{{igralec.ime.capitalize()}}</button>
+            <button type="submit" name="ime" value={{igralec.ime}} class="btn btn-outline-success">{{igralec.ime.capitalize()}}</button>
           % else:
             <button type="submit" name="ime" value={{igralec.ime}} class="btn btn-outline-primary">{{igralec.ime.capitalize()}}</button>
+          % end
           </form> 
       % end
-
   % end
 
 

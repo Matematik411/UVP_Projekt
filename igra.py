@@ -21,6 +21,7 @@ def index():
     nadzor=nadzor,
     error=False)
 
+
 # Izbira igralca preko naslednjih dveh ukazov pelje na glavno igralno stran.
 @bottle.post("/nov_igralec/")
 def nov_igralec():
@@ -42,8 +43,6 @@ def izbira():
     bottle.response.set_cookie("igralec", igralec, secret=SKRIVNOST, path = "/")
     bottle.redirect("/igra/")
         
-    
-
 
 # Stran za glavni del igre
 @bottle.get("/igra/")
@@ -104,8 +103,6 @@ def racun():
         error=True)
 
 
-
-
 # Reševanje dopolnjevanja besedila pesmi
 @bottle.post("/pesem/")
 def pesem():
@@ -160,7 +157,6 @@ def pesem():
         error=True)
 
 
-
 # Reševanje besedilnih nalog
 @bottle.post("/besedilna/")
 def besedilna():
@@ -174,6 +170,7 @@ def besedilna():
 
             return bottle.template("besedilna.tpl",
             navodilo=navodilo,
+            tezavnost=tezavnost,
             odgovor=False)
 
         else:
@@ -188,11 +185,13 @@ def besedilna():
                 else:
                     return bottle.template("besedilna.tpl",
                     navodilo=navodilo,
+                    tezavnost=tezavnost,
                     odgovor=True,
                     error=False)
             except ValueError:
                 return bottle.template("besedilna.tpl",
                 navodilo=navodilo,
+                tezavnost=tezavnost,
                 odgovor=True,
                 error=True)
     except (TypeError, ValueError, AttributeError):
@@ -200,8 +199,6 @@ def besedilna():
         return bottle.template("igra.tpl",
         igralec=nadzor.igralci[igralec],
         error=True)
-
-
 
 
 # Shranjevanje profila
@@ -222,12 +219,12 @@ def poraz():
     error=False)
 
 
-
 # Naslednji trije za dodajanje nalog
 @bottle.get("/dodaj/")
 def dodaj():
     return bottle.template("dodaj.tpl",
     error=False)
+
 
 @bottle.post("/dodaj_pesem/")
 def dodaj_pesem():
@@ -260,13 +257,10 @@ def dodaj_nalogo():
         error=True)
 
 
-
-
+# Za dodajanje slik
 @bottle.get("/img/<picture>/")
 def serve_pictures(picture):
     return bottle.static_file(picture, root='img')
     
-
-
 
 bottle.run(reloader=True, debug=True)
