@@ -14,14 +14,13 @@
     <div class="alert alert-danger" role="alert">
         <strong>Imate nekaj napak!</strong>
         <br>
-        <p>Reševali ste z naslednjo uspešnostjo:
+        Reševali ste z naslednjo uspešnostjo:
             <hr>
         % for beseda in uspeh:
             {{beseda}}  
         % end
             <hr>
-        Poskusite ponovno.
-        </p>
+        <p class="mb-0">Poskusite ponovno.</p>
     </div>
 % end
 

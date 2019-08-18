@@ -13,7 +13,7 @@
     <div class="alert alert-danger" role="alert">
         <strong>Napačen odgovor!</strong>
         <hr>
-        <p>Odgovorili ste narobe. Poskusite ponovno.</p>
+        <p class="mb-0">Odgovorili ste narobe. Poskusite ponovno.</p>
     </div>
 
 
