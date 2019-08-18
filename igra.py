@@ -27,7 +27,7 @@ def index():
 def nov_igralec():
     vnos = bottle.request.forms.getunicode("ime")
     zival = bottle.request.forms.getunicode("zival")
-    if zival == "izberi prijatelja" or "" == vnos or vnos.upper() in nadzor.igralci:
+    if zival == "Izberi prijatelja" or len(vnos.split()) > 1 or "" == vnos or vnos.upper() in nadzor.igralci:
         return bottle.template("index.tpl",
         nadzor=nadzor,
         error=True)
@@ -264,3 +264,4 @@ def serve_pictures(picture):
     
 
 bottle.run(reloader=True, debug=True)
+

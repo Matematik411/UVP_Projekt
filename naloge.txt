@@ -6,20 +6,20 @@ V škatli so štiri glave, štiri obleke in štirje pari čevljev. Koliko razli�
 (((TEŽAVNOST)))0
 2
 (((ZAČETEK)))1
+Živali na farmi imajo skupaj 34 nog. To so kokoši in krave. Krav je 7.
+Koliko je kokoši?
+(((REŠITEV)))1
+3
+(((TEŽAVNOST)))1
+2
+(((ZAČETEK)))2
 V vrečki imamo 36 kroglic različnih barv (rumene, rdeče, modre, zelene).
 Iz vrečke na slepo vzamemo kroglico. Verjetnost, da je rdeča, je 5/9.
 Koliko rdečih kroglic je v posodi?
-(((REŠITEV)))1
-20
-(((TEŽAVNOST)))1
-3
-(((ZAČETEK)))2
-Živali na farmi imajo skupaj 34 nog. To so kokoši in krave. Krav je 7.
-Koliko je kokoši?
 (((REŠITEV)))2
-3
+20
 (((TEŽAVNOST)))2
-2
+3
 (((ZAČETEK)))3
 Jan si vsak dan vsaj dvakrat umije zobe. Zjutraj nameni umivanju zob natančno 3 minute. Zvečer se umivanja loti še temeljiteje in mu nameni točno 5 minut. Kadar je sladkarije, si zmeraj umije zobe.
 Takrat mu umivanje vzame natanko 2 minuti časa. Ta teden je sladkarije jedel trikrat.

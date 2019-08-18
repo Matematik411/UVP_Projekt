@@ -8,7 +8,7 @@
     Pozdravljeni v igri evolucije, kjer skozi reševanje nalog razvijate svojega prijatelja. 
   </div>
 
-  Za novega igralca vnesite ime in izberite prijatelja.
+  Za novega igralca vnesite (enobesedno) ime in izberite prijatelja.
   <form action="/nov_igralec/" method="post">
     <div class="container">
       <div class="row">

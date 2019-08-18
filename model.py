@@ -1,7 +1,5 @@
 import random
 import json
-DATOTEKA_S_STANJEM = "stanje.json"
-DATOTEKA_S_PESMIMI = "besedila.txt"
 #* Pozdrav!
 # V tej datoteki definiram vse tipe nalog, ki so na voljo v igri.
 
