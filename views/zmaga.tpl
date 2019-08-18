@@ -13,7 +13,7 @@
 
 
   <div class="alert alert-light" role="alert">
-    Igra je bila narejena kot projektna naloga pri predmetu Uvod v programiranje, pri prof. dr. Andreju Bauerju, v študijskem letu 2018/2019.
+    Igra je bila narejena kot projektna naloga pri predmetu Uvod v programiranje, pri doc. dr. Matiji Pretnarju, v študijskem letu 2018/2019.
     Za pomoč se zahvaljujem družini, podatke in informacije pa sem pridobil na predavanjih in vajah že omenjenega predmeta in na svetovnem spletu.
     <br>Avtor: Nejc Zajc.
     <hr>
