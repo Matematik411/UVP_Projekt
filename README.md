@@ -3,7 +3,7 @@ Projekt za UVP.
 
 Avtor: **Nejc Zajc** \
 Študijsko leto: 2018/2019 \
-Izdelava: poletje 2019
+Izdelava: poletje 2019 \
 Verzija: 1.1
 
 Navodila:
