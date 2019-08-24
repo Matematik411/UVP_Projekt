@@ -9,7 +9,7 @@
     <p class="mb-0">Za nagrado vam podarjam okusno torto!</p>
   </div>
 
-  <img src="/img/cake.png/" alt="torta" height="400">
+  <img src="/img/torta.png/" alt="torta" height="400">
 
 
   <div class="alert alert-light" role="alert">
