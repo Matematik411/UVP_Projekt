@@ -50,56 +50,59 @@ class Racun:
 
 #------------------------------------------------------------
 #* Razred LYRICS, za tip naloge, ko igralec ugiba izbrisane besede iz besedila pesmi.
-
-# Funkcija, ki iz datoteke s pesmimi izbere zeljeno in izbrise nekaj besed, spremeni vse v potrebne oblike.
-def lyrics(level, datoteka_s_pesmimi, pesem):
-    locila = ".,!?"
-    stevilo = 2 * level
-    with open(datoteka_s_pesmimi, "r", encoding="utf-8") as dat:
-        ze_izbrane = []
-        for i, vrstica in enumerate(dat):
-            if i == 2 * pesem + 1:
-                vrstica = vrstica.split()
-                while stevilo > 0:
-                    zamenjan = random.randint(1, len(vrstica) - 2)
-                    beseda = vrstica[zamenjan]
-                    if len(beseda) > 1 and "-" != beseda[0]:
-                        kopija = beseda[::]
-                        kopija.rstrip(locila)
-                        kopija = kopija.upper()
-                        if kopija not in ze_izbrane:
-                            vrstica[zamenjan] = "-" + beseda
-                            stevilo -= 1
-                            ze_izbrane.append(kopija)
-                prava_vrstica = vrstica[::]
-            if i == 2 * pesem:
-                avtor, naslov = vrstica.split(",")
-                naslov = naslov.strip()
-        odseki = []
-        iskane = []
-        niz = ""
-        for beseda in prava_vrstica:
-            if "-" != beseda[0]:
-                niz += beseda + " "
-            else:
-                if beseda[-1] not in locila:
-                    odseki.append(niz)
-                    iskane.append(beseda[1:].upper())
-                    niz = " "
-                else:
-                    odseki.append(niz)
-                    iskane.append(beseda[1:-1].upper())
-                    niz = beseda[-1] + " "
-        odseki.append(niz[:-1])
-        return odseki, iskane, avtor, naslov
-
 class Lyrics:
     def __init__(self, level):
         self.level = level
 
-    # Glavna metoda, ki sestavni besedilo, manjkajoče besede. Željene podatke shrani v atribute atribute objekta razreda Lyrics.
-    def sestavi_tekst(self, datoteka_s_pesmimi, pesem):
-        self.odseki, self.iskane, *self.podatki = lyrics(self.level, datoteka_s_pesmimi, pesem)
+    # Glavna metoda, ki sestavi besedilo, izbere nekaj besed in jih odtrani. Željene podatke shrani v atribute atribute objekta razreda Lyrics.
+    def sestavi_tekst(self, datoteka_s_stanjem, pesem):
+        locila = ".,!?"
+        stevilo = 2 * self.level
+        with open(datoteka_s_stanjem, "r", encoding="utf-8") as dat:
+            podatki = json.load(dat)
+            podatki = podatki["pesmi"]
+            podatki = podatki[pesem]
+            avtor = podatki["avtor"]
+            naslov = podatki["naslov"]
+            besedilo = podatki["besedilo"]
+            besedilo = besedilo.split()
+
+            ze_izbrane = []
+            while stevilo > 0:
+                zamenjan = random.randint(1, len(besedilo) - 2)
+                beseda = besedilo[zamenjan]
+                if len(beseda) > 1 and "-" != beseda[0]:
+                    kopija = beseda[::]
+                    kopija.rstrip(locila)
+                    kopija.rstrip()
+                    kopija = kopija.upper()
+                    if kopija not in ze_izbrane:
+                        besedilo[zamenjan] = "-" + beseda
+                        stevilo -= 1
+                        ze_izbrane.append(kopija)
+
+            odseki = []
+            iskane = []
+            niz = ""
+            for beseda in besedilo:
+                if "-" != beseda[0]:
+                    niz += beseda + " "
+                else:
+                    if beseda[-1] not in locila:
+                        odseki.append(niz)
+                        iskane.append(beseda[1:].upper())
+                        niz = " "
+                    else:
+                        odseki.append(niz)
+                        iskane.append(beseda[1:-1].upper())
+                        niz = beseda[-1] + " "
+            odseki.append(niz[:-1])
+            premesano = [i for i in range(len(iskane))]
+            random.shuffle(premesano)
+        self.odseki = odseki
+        self.iskane = iskane
+        self.premesano = premesano
+        self.podatki = avtor, naslov
 
 #------------------------------------------------------------
     
@@ -112,32 +115,16 @@ class Besedilna:
         pass
     
     # Glavna metoda, ki shrani željene vrednosti v atribute objekta.
-    def sestavi_besedilno(self, datoteka_z_nalogami, naloga):
-        with open(datoteka_z_nalogami, "r", encoding="utf-8") as dat:
-            navodilo = ""
-            prvi_del = False
-            drugi_del = False
-            tretji_del = False
-            for vrstica in dat:
-                if vrstica == "(((REŠITEV))){0}\n".format(naloga):
-                    prvi_del = False
-
-                if prvi_del:
-                    navodilo += vrstica
-                if drugi_del:
-                    resitev = int(vrstica)
-                    drugi_del = False
-                if tretji_del:
-                    tezavnost = int(vrstica)
-                    tretji_del = False
-
-                if vrstica == "(((ZAČETEK))){0}\n".format(naloga):
-                    prvi_del = True
-                elif vrstica == "(((REŠITEV))){0}\n".format(naloga):
-                    drugi_del = True
-                elif vrstica == "(((TEŽAVNOST))){0}\n".format(naloga):
-                    tretji_del = True
-            self.navodilo = navodilo[:-1]
+    def sestavi_besedilno(self, datoteka_s_stanjem, naloga):
+        with open(datoteka_s_stanjem, "r", encoding="utf-8") as dat:
+            podatki = json.load(dat)
+            podatki = podatki["besedilne"]
+            podatki = podatki[naloga]
+            tezavnost = podatki["tezavnost"]
+            navodilo = podatki["navodilo"]
+            resitev = podatki["resitev"]
+            
+            self.navodilo = navodilo
             self.resitev = resitev
             self.tezavnost = tezavnost
                 
@@ -162,18 +149,18 @@ class Igralec:
         return racun.a, racun.znak, racun.b, racun.resitev()
 
     # To metodo se kliče za nalogo iskanja manjkajočih besed. Vrne iskane podatke.
-    def zapoj(self, datoteka_s_pesmimi):
+    def zapoj(self, datoteka_s_stanjem):
         pesem = Lyrics(self.level)
         zap_st = random.choice(self.preostale_pesmi)
-        pesem.sestavi_tekst(datoteka_s_pesmimi, zap_st)
+        pesem.sestavi_tekst(datoteka_s_stanjem, zap_st)
         self.preostale_pesmi.remove(zap_st)
-        return pesem.podatki, pesem.odseki, pesem.iskane
+        return pesem.podatki, pesem.odseki, pesem.iskane, pesem.premesano
 
     # Ta metoda pa se kliče pri besedilni nalogi, prav tako vrne podatke.
-    def resuj(self, datoteka_z_nalogami):
+    def resuj(self, datoteka_s_stanjem):
         naloga = Besedilna()
         zap_st = random.choice(self.preostale_naloge)
-        naloga.sestavi_besedilno(datoteka_z_nalogami, zap_st)
+        naloga.sestavi_besedilno(datoteka_s_stanjem, zap_st)
         self.preostale_naloge.remove(zap_st)
         return naloga.navodilo, naloga.resitev, naloga.tezavnost
 
@@ -191,21 +178,14 @@ class Igralec:
 #* Razred NADZOR, ki nadzira, shranjuje in upravlja delovanje igre.
 # Objek Nadzora ima v atributih shranjene vse potrebne podatke, za igranje in ustvarjanje novih igralcev.
 class Nadzor:
-    def __init__(self, datoteka_s_stanjem, datoteka_s_pesmimi, datoteka_z_nalogami):
+    def __init__(self, datoteka_s_stanjem):
         self.igralci = {}
         self.datoteka_s_stanjem = datoteka_s_stanjem
-        self.datoteka_s_pesmimi = datoteka_s_pesmimi
-        self.datoteka_z_nalogami = datoteka_z_nalogami
         self.odgovor = False
-        with open(datoteka_s_pesmimi, "r", encoding="utf-8") as dat:
-            for i, _ in enumerate(dat):
-                pass
-        self.stevilo_pesmi = (i + 1) // 2
-        with open(datoteka_z_nalogami, "r", encoding="utf-8") as dat:
-            for vrstica in dat:
-                if vrstica[:15] == "(((TEŽAVNOST)))":
-                    skupaj = int(vrstica[15:])
-        self.stevilo_nalog = skupaj + 1
+        with open(datoteka_s_stanjem, "r", encoding="utf-8") as dat:
+            podatki = json.load(dat)
+            self.stevilo_pesmi = len(podatki["pesmi"])
+            self.stevilo_nalog = len(podatki["besedilne"])
             
     # Se kliče za ustvarjanje novega igralca.
     def nov_igralec(self, ime, zival):
@@ -215,17 +195,21 @@ class Nadzor:
 
     # Shrani podatke o vseh igralcih v datoteko "stanje.json".
     def shrani(self):
+        with open(self.datoteka_s_stanjem, "r", encoding="utf-8") as dat:
+            skupaj = json.load(dat)
         with open(self.datoteka_s_stanjem, "w", encoding="utf-8") as dat:
             podatki = {ime.upper(): {"level" : igralec.level, "exp" : igralec.exp,
             "pesmi" : igralec.preostale_pesmi, "naloge" : igralec.preostale_naloge,
             "zival" : igralec.zival}
             for ime, igralec in self.igralci.items()}
-            json.dump(podatki, dat)
+
+            skupaj["igralci"] = podatki
+            json.dump(skupaj, dat, indent=2)
 
     # Naloži podatke o igralcih iz datoteke "stanje.json".
     def nalozi(self):
         with open(self.datoteka_s_stanjem, "r", encoding="utf-8") as dat:
-            podatki = json.load(dat)
+            podatki = json.load(dat)["igralci"]
             for ime, slovar in podatki.items():
                 igralec = Igralec(ime.upper(), slovar["zival"], self.stevilo_pesmi, self.stevilo_nalog)
                 igralec.level = slovar["level"]
@@ -235,27 +219,35 @@ class Nadzor:
                 self.igralci[ime] = igralec
 
     # Metoda za nalaganje nove pesmi. Vnesemo željeni del besedila ter podatke o pesmi. Podatka sta naslov in izvajalec, ki pa ne smeta vsebovati vejic.
-    def dodaj_pesem(self, podatki, niz):
+    def dodaj_pesem(self, podatki, besedilo):
+        with open(self.datoteka_s_stanjem, "r", encoding="utf-8") as dat:
+            skupaj = json.load(dat)
+        avtor, naslov = podatki
+        pesmi = skupaj["pesmi"]
+        slovar = {"avtor" : avtor, "naslov" : naslov, "besedilo": besedilo}
+        pesmi.append(slovar)
+        skupaj["pesmi"] = pesmi
+        with open(self.datoteka_s_stanjem, "w", encoding="utf-8") as dat:
+            json.dump(skupaj, dat, indent=2)
+
         for igralec in self.igralci.values():
             igralec.preostale_pesmi.append(self.stevilo_pesmi)
         self.stevilo_pesmi += 1
         self.shrani()
-        avtor, naslov = podatki
-        with open(self.datoteka_s_pesmimi, "a", encoding="utf-8") as dat:
-            print("{0}, {1}".format(avtor, naslov), file=dat)
-            print(" ".join(niz.split()), file=dat)
 
     # Dodajanje besedilnih nalog, s številskimi rešitvami.
     def dodaj_nalogo(self, navodilo, resitev, tezavnost):
+        with open(self.datoteka_s_stanjem, "r", encoding="utf-8") as dat:
+            skupaj = json.load(dat)
+        naloge = skupaj["besedilne"]
+        slovar = {"tezavnost" : tezavnost, "navodilo" : navodilo, "resitev" : resitev}
+        naloge.append(slovar)
+        skupaj["besedilne"] = naloge
+
+        with open(self.datoteka_s_stanjem, "w", encoding="utf-8") as dat:
+            json.dump(skupaj, dat, indent=2)
+ 
         for igralec in self.igralci.values():
             igralec.preostale_naloge.append(self.stevilo_nalog)
-        with open(self.datoteka_z_nalogami, "a", encoding="utf-8") as dat:
-            print("(((ZAČETEK))){0}".format(self.stevilo_nalog), file=dat)
-            print(navodilo, file=dat)
-            print("(((REŠITEV))){0}".format(self.stevilo_nalog), file=dat)
-            print(resitev, file=dat)
-            print("(((TEŽAVNOST))){0}".format(self.stevilo_nalog), file=dat)
-            print(tezavnost, file=dat)
         self.stevilo_nalog += 1
         self.shrani()
- 

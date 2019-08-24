@@ -60,9 +60,13 @@
 
 % if error:
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
-        <strong>Prišlo je do napake!</strong><br> Morebiti ste nekatera polja pustili prazna, ste pri podatkih o pesmih uporabili vejice, ali pa je neustrezna dolžina dela pesmi, ki ste ga vpisali.
+        <strong>Prišlo je do napake!</strong><br> Morebiti ste nekatera polja pustili prazna ali pa sta dolžina pesmi oziroma težavnost naloge, ki ste ju vpisali, neustrezni.
         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
         </button>
     </div>
+% end
 
+<form action="/" method="get">
+    <button type="submit" class="btn btn-danger">Nazaj na začetno stran.</button>
+</form>   

@@ -2,5 +2,6 @@
     "files.associations": {
         "*.tpl": "html",
         "*.master": "html"
-      }
+      },
+    "editor.wordWrap": "on"
 }

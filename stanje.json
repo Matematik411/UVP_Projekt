@@ -1,1 +1,178 @@
-{"NEJC": {"level": 3, "exp": 3, "pesmi": [1, 2, 3, 4, 6, 7, 8, 9, 10, 11, 12, 14], "naloge": [0, 1, 2], "zival": "duh"}, "KONEC": {"level": 6, "exp": 0, "pesmi": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "naloge": [0, 1, 2, 3, 4], "zival": "zaba"}, "LEVEL5": {"level": 5, "exp": 0, "pesmi": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "naloge": [0, 1, 2, 3, 4], "zival": "zmaj"}}
+{
+  "igralci": {
+    "NEJC": {
+      "level": 4,
+      "exp": 8,
+      "pesmi": [
+        1,
+        5,
+        6,
+        7,
+        9,
+        10,
+        13,
+        14,
+        15
+      ],
+      "naloge": [
+        1,
+        2
+      ],
+      "zival": "duh"
+    },
+    "KONEC": {
+      "level": 6,
+      "exp": 0,
+      "pesmi": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "naloge": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "zival": "kamenko"
+    },
+    "LEVEL5": {
+      "level": 5,
+      "exp": 0,
+      "pesmi": [
+        15
+      ],
+      "naloge": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "zival": "zmaj"
+    }
+  },
+  "pesmi": [
+    {
+      "avtor": "Mi2",
+      "naslov": "Sladka ko med",
+      "besedilo": "Dobro vem, da pri spominih se \u010dloveku v glavnem zdi, da za nazaj izgleda vedno vse bolj lepo, a tu pa tam priznam, prise\u017eem, ni me sram, zalotim se, da mislim le na njo."
+    },
+    {
+      "avtor": "Tabu",
+      "naslov": "Poljubljena",
+      "besedilo": "Nikdar jutro ni tako se vnelo, kot za naju dva, poljubljena. Nikdar \u0161e tako, kot s tabo, morje ni tako bu\u010dalo. Nikdar polje ni tako di\u0161alo, kot za naju dva, ko se ljubiva."
+    },
+    {
+      "avtor": "\u0160ank rock",
+      "naslov": "Pravljica o mavri\u010dnih ljudeh",
+      "besedilo": "Pravljica o mavri\u010dnih ljudeh, dih no\u010di, v ogledalu posmeh, pravljica za mavri\u010dne ljudi, kot spomin, ki po\u010dasi bledi, v srcu poraz, v senci obraz preteklosti."
+    },
+    {
+      "avtor": "Siddharta",
+      "naslov": "Samo edini",
+      "besedilo": "Vem, da nisem prvi, ki ne zna stop\u2019t na divji vrh sveta in ne bom ta zadn, k\u2019 te vidu v sanjah. Kolk jih je pred mano dihal\u2019 zrak in kolkim se rodi najlep\u0161i otrok? Kolk jih \u0161e pride sem za nami v ta rod?"
+    },
+    {
+      "avtor": "Slon in Sade\u017e",
+      "naslov": "Pot v f(x)",
+      "besedilo": "Jst sm MC kvadrat, jst sm E, dva cela sedem ena osem dve je moje ime, edini podatek, vse kar je dano, bratje in sestre, ra\u010dunite z mano."
+    },
+    {
+      "avtor": "Tabu",
+      "naslov": "Dobra vila",
+      "besedilo": "Nih\u010de ve\u010d ne objokuje, ni\u010d ve\u010d ni skrbi. Nasmejano sonce sije na vse ljudi, naj udari, naj se sli\u0161i glasno iz neba, naj prepeva, naj odmeva pesem \u010dude\u017ena."
+    },
+    {
+      "avtor": "Mi2",
+      "naslov": "Visoka pesem",
+      "besedilo": "Prvi \u0161pil na\u0161ega benda je v razprodani hali, narod poje vse komade, kot bi jih od nekdaj znali, cvet novinark nas oblega, naskakuje, \u0161e komerc programi nas vrte kot kake tuje."
+    },
+    {
+      "avtor": "Mi2",
+      "naslov": "Samo tebe te imam",
+      "besedilo": "V malem kraju, v mali ulici stal je mali no\u010dni bar tam si dobo, \u010de si bil fejst sam fukat \u017ee za mali dnar. Glavna faca pa je bil Mad\u017ear ki je tam tu pa tam igral znal je \u0161pilat samo en komad pa \u0161e tega bol naspou."
+    },
+    {
+      "avtor": "\u0160ank rock",
+      "naslov": "Nekaj ve\u010d",
+      "besedilo": "S tabo misli so ideje in ideje novi cilji. S tabo cilji so izzivi in izzivi so re\u0161ljivi. Je lepo, ko v meni prebudi\u0161 ob\u010dutke. Je lepo, ko ve\u010dnost spremeni\u0161 v trenutke."
+    },
+    {
+      "avtor": "Ditka",
+      "naslov": "Ne bodi kot drugi",
+      "besedilo": "Napravi to zmeraj, ne bodi kot drugi, ljubezen ni reka, ki te\u010de po strugi. Napravi to zopet, ne hodi po poti, saj sre\u010da ni nekaj, kar pride naproti."
+    },
+    {
+      "avtor": "Adi Smolar",
+      "naslov": "Na travniku",
+      "besedilo": "Glej ta na\u0161 svet, tako je lep, kot lepe sanje. \u017divljenje imej za prekrasno potovanje. Grde stvari naj ti te radosti ne vzamejo, ker sre\u010dni so le, ki sre\u010do res dojamejo."
+    },
+    {
+      "avtor": "Mi2",
+      "naslov": "Pojdi z menoj v toplice",
+      "besedilo": "Nikol se nisem kaj preve\u010d sekiral kaj bo jutri al pa dan po tem. \u0160ola \u0161la je kolko tolko v redi dnar pa tudi ni bil \u201cglih\u201d problem. Na\u0161el sem si v Sotelsem kurirju fino slu\u017ebo za poletne dni, bil sm \u201cbademajster\u201d na bazeni, \u010duval deco, da se ne vtopi."
+    },
+    {
+      "avtor": "Siddharta",
+      "naslov": "Pot v x",
+      "besedilo": "Vsi vemo, da nekateri bi radi \u0161e \u010darati znal\u2019, vsi vemo, da za minuto bi slave sebe prodal\u2019. \u017dalostno, da ti la\u017enivi dobijo denar le tako, da samo sranje na police filajo."
+    },
+    {
+      "avtor": "Siddharta",
+      "naslov": "Na soncu",
+      "besedilo": "Jaz ne morem ve\u010d v temi \u017eivet, jaz bi hodu na soncu, jaz bi hotu tebe \u2018met. Zdaj ne rab\u2019m ve\u010d ostalih stvari, sam\u2019 \u0161e svoje sanje in \u010dloveka kot si ti."
+    },
+    {
+      "avtor": "BIg foot mama",
+      "naslov": "Vrn' se k men'",
+      "besedilo": "Znal sem ti polizat prah iz o\u010di, s cvetjem posipat vla\u017ene dlani, ampak sade\u017e z drevesa vzel sem si sam, no, zdej pa \u2018mam! Dej, vrn\u2019 se k men\u2019, nej ti ne bo vseen\u2019, ker bi \u0161e kdaj obleku tvojo srajco in bil pote\u0161en."
+    },
+    {
+      "avtor": "S.I.T. - BQL (ANEJ & ROK PILETI\u010c), ISAAC PALMA, LINA KUDUZOVI\u0106, LUKA SE\u0160EK, NIKA ZORJAN, LUKA BASI, DUNKING DEVILS, KLARA JAZBEC, ARTIFEX, WILDART,  F&B ACROBATICS, JERNEJ KOZAN, SIMON \u0160KRLEC, MAGIC ALEKSANDER",
+      "naslov": "Vro\u010de",
+      "besedilo": "Kam vodi me, nosi me\r\nv \u017eivljenju ocean?\r\nKaj me nari\u0161e, podpi\u0161e,\r\nda se v njem spoznam?\r\n\r\nPrelije se korak\r\njutri v nov dan, jutri v nov dan,\r\nzare\u017ee se v mrak,\r\nnikoli se ne vdam!"
+    }
+  ],
+  "besedilne": [
+    {
+      "tezavnost": 2,
+      "navodilo": "V trgovini prodajajo priljubljeno otro\u0161ko sestavljanko iz lesa. Otroci lahko poljubno izberejo glavo, obleko in \u010devlje medvedka. V \u0161katli so \u0161tiri glave, \u0161tiri obleke in \u0161tirje pari \u010devljev. Koliko razli\u010dnih medvedkov lahko sestavimo?",
+      "resitev": 64
+    },
+    {
+      "tezavnost": 1,
+      "navodilo": "\u017divali na farmi imajo skupaj 34 nog. To so koko\u0161i in krave. Krav je 7. Koliko je koko\u0161i?",
+      "resitev": 3
+    },
+    {
+      "tezavnost": 3,
+      "navodilo": "V vre\u010dki imamo 36 kroglic razli\u010dnih barv (rumene, rde\u010de, modre, zelene).\r\nIz vre\u010dke na slepo vzamemo kroglico. Verjetnost, da je rde\u010da, je 5/9.\r\nKoliko rde\u010dih kroglic je v posodi?",
+      "resitev": 20
+    },
+    {
+      "tezavnost": 2,
+      "navodilo": "Jan si vsak dan vsaj dvakrat umije zobe. Zjutraj nameni umivanju zob natan\u010dno 3 minute. Zve\u010der se umivanja loti \u0161e temeljiteje in mu nameni to\u010dno 5 minut. Kadar je sladkarije, si zmeraj umije zobe.\r\nTakrat mu umivanje vzame natanko 2 minuti \u010dasa. Ta teden je sladkarije jedel trikrat.\r\nKoliko minut je Jan ta teden namenil umivanju zob?",
+      "resitev": 62
+    },
+    {
+      "tezavnost": 2,
+      "navodilo": "Peter in Petra vsako jutro te\u010deta na stadionu. Peter potrebuje za en krog 4 minute, Petra pa 6 minut. Te\u010di za\u010dneta isto\u010dasno. Po koliko minutah se bosta spet sre\u010dala?",
+      "resitev": 24
+    }
+  ]
+}

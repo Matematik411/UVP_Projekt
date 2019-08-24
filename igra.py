@@ -1,17 +1,14 @@
 import bottle
 import ast
 import model
-import random
 
 #* V tej datoteki, pa so še vsi ukazi, za delovanje spletnega vmesnika in upravljanja programa
 # Najprej so definirane konstante, nato pa po @bottle. ukazih še dodatne strani.
 # html podlaga je "base.tpl", ki se nato preko ostalih .tpl datotek razvije v spletne prikaze.
 
 DATOTEKA_S_STANJEM = "stanje.json"
-DATOTEKA_S_PESMIMI = "besedila.txt"
-DATOTEKA_Z_NALOGAMI = "naloge.txt"
 SKRIVNOST = "skrivnost"
-nadzor = model.Nadzor(DATOTEKA_S_STANJEM, DATOTEKA_S_PESMIMI, DATOTEKA_Z_NALOGAMI)
+nadzor = model.Nadzor(DATOTEKA_S_STANJEM)
 
 # Prva stran
 @bottle.get("/")
@@ -39,7 +36,7 @@ def nov_igralec():
 
 @bottle.post("/izbira/")
 def izbira():
-    igralec = bottle.request.forms.getunicode("ime")
+    igralec = bottle.request.forms.getunicode("igralec")
     bottle.response.set_cookie("igralec", igralec, secret=SKRIVNOST, path = "/")
     bottle.redirect("/igra/")
         
@@ -109,11 +106,8 @@ def pesem():
     igralec = bottle.request.get_cookie("igralec", secret=SKRIVNOST)
     try:
         if not nadzor.odgovor:
-            vrednosti = nadzor.igralci[igralec].zapoj(nadzor.datoteka_s_pesmimi)
-            (avtor, naslov), odseki, iskane = vrednosti
-            premesano = [i for i in range(len(iskane))]
-            random.shuffle(premesano)
-            vrednosti = ((avtor, naslov), odseki, iskane, premesano)
+            vrednosti = nadzor.igralci[igralec].zapoj(nadzor.datoteka_s_stanjem)
+            (avtor, naslov), odseki, iskane, premesano = vrednosti
             bottle.response.set_cookie("vrednosti", str(vrednosti), secret=SKRIVNOST, path="/")
             nadzor.odgovor = True
 
@@ -163,7 +157,7 @@ def besedilna():
     igralec = bottle.request.get_cookie("igralec", secret=SKRIVNOST)
     try:
         if not nadzor.odgovor:
-            vrednosti = nadzor.igralci[igralec].resuj(nadzor.datoteka_z_nalogami)
+            vrednosti = nadzor.igralci[igralec].resuj(nadzor.datoteka_s_stanjem)
             navodilo, resitev, tezavnost = vrednosti
             nadzor.odgovor = True
             bottle.response.set_cookie("vrednosti", str(vrednosti), secret=SKRIVNOST, path="/")
@@ -233,7 +227,7 @@ def dodaj_pesem():
         naslov = bottle.request.forms.getunicode("naslov")
         besedilo = bottle.request.forms.getunicode("besedilo")
         dolzina = len(besedilo.split())
-        if "," in avtor or "," in naslov or "" in [avtor, naslov, besedilo] or 20 > dolzina or 50 < dolzina:
+        if "" in [avtor, naslov, besedilo] or 20 > dolzina or 50 < dolzina:
             raise ValueError
         nadzor.dodaj_pesem((avtor, naslov), besedilo)
         bottle.redirect("/")
