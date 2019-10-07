@@ -2,16 +2,14 @@
   "igralci": {
     "NEJC": {
       "level": 4,
-      "exp": 8,
+      "exp": 6,
       "pesmi": [
         1,
         5,
         6,
-        7,
         9,
         10,
         13,
-        14,
         15
       ],
       "naloge": [
